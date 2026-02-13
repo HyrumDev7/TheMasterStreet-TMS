@@ -68,7 +68,7 @@ Aquí debes agregar las variables de entorno. Clic en **"Environment Variables"*
 NEXT_PUBLIC_SUPABASE_URL = tu_url_de_supabase
 NEXT_PUBLIC_SUPABASE_ANON_KEY = tu_anon_key
 SUPABASE_SERVICE_ROLE_KEY = tu_service_role_key
-NEXT_PUBLIC_APP_URL = https://tu-proyecto.vercel.app
+NEXT_PUBLIC_APP_URL = https://www.masterstreet.cl
 NEXT_PUBLIC_APP_NAME = The Master Street
 ```
 
@@ -210,6 +210,20 @@ vercel logs
 # Ver información del proyecto
 vercel inspect
 ```
+
+---
+
+## Dominio personalizado (masterstreet.cl)
+
+**CRÍTICO:** Si usas dominio propio, configura `NEXT_PUBLIC_APP_URL` con tu URL de producción:
+
+```
+NEXT_PUBLIC_APP_URL = https://www.masterstreet.cl
+```
+
+Sin esto, pagos (Flow), correos (Resend) y enlaces pueden apuntar a localhost:3000. Después de cambiar variables, haz un **Redeploy**.
+
+Ver guía detallada: [PRODUCCION_MASTERSTREET.md](./PRODUCCION_MASTERSTREET.md)
 
 ---
 

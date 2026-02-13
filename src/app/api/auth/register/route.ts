@@ -72,17 +72,18 @@ export async function POST(request: Request) {
     }
     
     // Crear perfil en la tabla profiles
+    const profileData = {
+      id: authData.user.id,
+      nombre: validatedData.nombre,
+      rut: validatedData.rut,
+      alias: validatedData.alias,
+      email: validatedData.email,
+      rol: 'competitor',
+      estado: 'active',
+    }
     const { error: profileError } = await supabase
       .from('profiles')
-      .insert({
-        id: authData.user.id,
-        nombre: validatedData.nombre,
-        rut: validatedData.rut,
-        alias: validatedData.alias,
-        email: validatedData.email,
-        rol: 'competitor',
-        estado: 'active',
-      })
+      .insert(profileData as never)
     
     if (profileError) {
       // Si falla la creación del perfil, intentar eliminar el usuario de auth

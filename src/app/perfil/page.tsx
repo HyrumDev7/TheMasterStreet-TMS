@@ -4,6 +4,8 @@ import Link from 'next/link'
 import { User, Ticket, FileText, Video, Settings } from 'lucide-react'
 import Card from '@/components/ui/Card'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Mi Perfil | The Master Street',
 }

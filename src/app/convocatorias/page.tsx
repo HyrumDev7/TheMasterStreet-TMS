@@ -4,6 +4,8 @@ import { Calendar, Users, Clock } from 'lucide-react'
 import { formatDate } from '@/lib/utils/format'
 import Badge from '@/components/ui/Badge'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Convocatorias | The Master Street',
   description: 'Aplica a las convocatorias abiertas para participar en nuestros eventos.',

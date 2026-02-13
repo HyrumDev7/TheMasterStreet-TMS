@@ -1,6 +1,8 @@
 import { createServerClient } from '@/lib/supabase/server'
 import EventCard from '@/components/eventos/EventCard'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Próximos Eventos | The Master Street',
   description: 'Descubre los próximos eventos de freestyle, batallas, workshops y más.',

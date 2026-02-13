@@ -30,4 +30,7 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+  .min-h-screen {
+    min-height: 66vh;
+  }
 }

@@ -1,5 +1,7 @@
 import Link from 'next/link'
 import { createServerClient } from '@/lib/supabase/server'
+
+export const dynamic = 'force-dynamic'
 import EventCard from '@/components/eventos/EventCard'
 import { ArrowRight, Mic, Users, Calendar, Trophy } from 'lucide-react'
 

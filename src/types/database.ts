@@ -1,16 +1,15 @@
-/**
- * Tipos de base de datos generados desde Supabase
- * 
- * NOTA: Este archivo debe ser regenerado después de crear el schema en Supabase
- * usando el comando:
- * npx supabase gen types typescript --project-id your-project-ref > src/types/database.ts
- * 
- * Por ahora, definimos tipos básicos basados en el schema SQL proporcionado
- */
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
 
-export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
-
-export interface Database {
+export type Database = {
+  __InternalSupabase: {
+    PostgrestVersion: "14.1"
+  }
   public: {
     Tables: {
       profiles: {
@@ -20,19 +19,10 @@ export interface Database {
           rut: string
           alias: string
           email: string
-          telefono: string | null
-          fecha_nacimiento: string | null
-          ciudad: string | null
-          biografia: string | null
-          foto_perfil_url: string | null
-          video_presentacion_url: string | null
-          instagram: string | null
-          youtube: string | null
-          spotify: string | null
-          rol: 'competitor' | 'admin' | 'judge'
-          estado: 'active' | 'suspended' | 'banned'
-          created_at: string
-          updated_at: string
+          rol: string
+          estado: string
+          created_at?: string
+          updated_at?: string
         }
         Insert: {
           id: string
@@ -40,17 +30,8 @@ export interface Database {
           rut: string
           alias: string
           email: string
-          telefono?: string | null
-          fecha_nacimiento?: string | null
-          ciudad?: string | null
-          biografia?: string | null
-          foto_perfil_url?: string | null
-          video_presentacion_url?: string | null
-          instagram?: string | null
-          youtube?: string | null
-          spotify?: string | null
-          rol?: 'competitor' | 'admin' | 'judge'
-          estado?: 'active' | 'suspended' | 'banned'
+          rol?: string
+          estado?: string
           created_at?: string
           updated_at?: string
         }
@@ -60,112 +41,13 @@ export interface Database {
           rut?: string
           alias?: string
           email?: string
-          telefono?: string | null
-          fecha_nacimiento?: string | null
-          ciudad?: string | null
-          biografia?: string | null
-          foto_perfil_url?: string | null
-          video_presentacion_url?: string | null
-          instagram?: string | null
-          youtube?: string | null
-          spotify?: string | null
-          rol?: 'competitor' | 'admin' | 'judge'
-          estado?: 'active' | 'suspended' | 'banned'
+          rol?: string
+          estado?: string
           created_at?: string
           updated_at?: string
         }
       }
-      eventos: {
-        Row: {
-          id: string
-          titulo: string
-          slug: string
-          descripcion: string
-          descripcion_corta: string | null
-          tipo: 'batalla' | 'workshop' | 'cypher' | 'showcase'
-          fecha_inicio: string
-          fecha_fin: string | null
-          lugar: string
-          direccion: string | null
-          ciudad: string
-          latitud: number | null
-          longitud: number | null
-          imagen_portada_url: string | null
-          imagen_banner_url: string | null
-          aforo_maximo: number | null
-          aforo_actual: number
-          precio_general: number | null
-          precio_vip: number | null
-          precio_early_bird: number | null
-          requiere_inscripcion: boolean
-          fecha_limite_inscripcion: string | null
-          estado: 'draft' | 'published' | 'cancelled' | 'finished'
-          destacado: boolean
-          created_by: string | null
-          created_at: string
-          updated_at: string
-        }
-        Insert: {
-          id?: string
-          titulo: string
-          slug: string
-          descripcion: string
-          descripcion_corta?: string | null
-          tipo: 'batalla' | 'workshop' | 'cypher' | 'showcase'
-          fecha_inicio: string
-          fecha_fin?: string | null
-          lugar: string
-          direccion?: string | null
-          ciudad?: string
-          latitud?: number | null
-          longitud?: number | null
-          imagen_portada_url?: string | null
-          imagen_banner_url?: string | null
-          aforo_maximo?: number | null
-          aforo_actual?: number
-          precio_general?: number | null
-          precio_vip?: number | null
-          precio_early_bird?: number | null
-          requiere_inscripcion?: boolean
-          fecha_limite_inscripcion?: string | null
-          estado?: 'draft' | 'published' | 'cancelled' | 'finished'
-          destacado?: boolean
-          created_by?: string | null
-          created_at?: string
-          updated_at?: string
-        }
-        Update: {
-          id?: string
-          titulo?: string
-          slug?: string
-          descripcion?: string
-          descripcion_corta?: string | null
-          tipo?: 'batalla' | 'workshop' | 'cypher' | 'showcase'
-          fecha_inicio?: string
-          fecha_fin?: string | null
-          lugar?: string
-          direccion?: string | null
-          ciudad?: string
-          latitud?: number | null
-          longitud?: number | null
-          imagen_portada_url?: string | null
-          imagen_banner_url?: string | null
-          aforo_maximo?: number | null
-          aforo_actual?: number
-          precio_general?: number | null
-          precio_vip?: number | null
-          precio_early_bird?: number | null
-          requiere_inscripcion?: boolean
-          fecha_limite_inscripcion?: string | null
-          estado?: 'draft' | 'published' | 'cancelled' | 'finished'
-          destacado?: boolean
-          created_by?: string | null
-          created_at?: string
-          updated_at?: string
-        }
-      }
-      // Agregar más tablas según sea necesario
-      // Por ahora solo incluimos las principales
+      [_ in never]: never
     }
     Views: {
       [_ in never]: never
@@ -176,5 +58,133 @@ export interface Database {
     Enums: {
       [_ in never]: never
     }
+    CompositeTypes: {
+      [_ in never]: never
+    }
   }
 }
+
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
+
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
+
+export type Tables<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof (
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+          DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"]
+      )
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      Row: infer R
+    }
+    ? R
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
+      DefaultSchema["Views"])
+  ? (DefaultSchema["Tables"] &
+      DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+      Row: infer R
+    }
+    ? R
+    : never
+  : never
+
+export type TablesInsert<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Insert: infer I
+    }
+    ? I
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+  ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+      Insert: infer I
+    }
+    ? I
+    : never
+  : never
+
+export type TablesUpdate<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Update: infer U
+    }
+    ? U
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+  ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+      Update: infer U
+    }
+    ? U
+    : never
+  : never
+
+export type Enums<
+  DefaultSchemaEnumNameOrOptions extends
+    | keyof DefaultSchema["Enums"]
+    | { schema: keyof DatabaseWithoutInternals },
+  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    : never = never,
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
+  ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
+  : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof DefaultSchema["CompositeTypes"]
+    | { schema: keyof DatabaseWithoutInternals },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
+  ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+  : never
+
+export const Constants = {
+  public: {
+    Enums: {},
+  },
+} as const
