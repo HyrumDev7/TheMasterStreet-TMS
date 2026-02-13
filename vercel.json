@@ -2,6 +2,15 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
   "regions": ["gru1"],
+  "installCommand": "npm install --legacy-peer-deps",
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "destination": "https://www.masterstreet.cl/$1",
+      "permanent": true,
+      "has": [{ "type": "host", "value": "masterstreet.cl" }]
+    }
+  ],
   "headers": [
     {
       "source": "/api/(.*)",
