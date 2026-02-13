@@ -62,74 +62,8 @@ npm run dev
 
 El schema completo está en `database/schema.sql`. Ejecutar en Supabase Dashboard > SQL Editor.
 
-### Tablas principales:
-- `profiles` - Perfiles de usuarios
-- `eventos` - Eventos y batallas
-- `convocatorias` - Convocatorias abiertas
-- `aplicaciones` - Aplicaciones de competidores
-- `ordenes_compra` - Órdenes de compra
-- `entradas` - Entradas vendidas
-- `noticias` - Blog/Noticias
-- Y más...
-
-## 🔐 Autenticación
-
-- Usuarios pueden registrarse con RUT chileno
-- Validación de RUT implementada
-- Usuarios invitados pueden comprar entradas sin registro
-- Registro requerido para aplicar a convocatorias
-
-## 💳 Pagos
-
-Integración con Flow (principal) y Transbank (alternativa):
-- Creación de órdenes
-- Inicialización de pagos
-- Confirmación de pagos
-- Generación de QR para entradas
-
-
-## 🚢 Deploy
-
-### Vercel (Recomendado)
-
-```bash
-# Instalar Vercel CLI
-npm i -g vercel
-
-# Login
-vercel login
-
-# Deploy
-vercel --prod
-```
-
-Configurar variables de entorno en Vercel Dashboard.
-
-## 📝 Scripts Disponibles
-
-```bash
-npm run dev          # Desarrollo
-npm run build        # Build de producción
-npm run start        # Iniciar servidor de producción
-npm run lint         # Linter
-npm run type-check   # Verificar tipos TypeScript
-```
-
-## 🔧 Configuración Adicional
-
-### Supabase Storage
-
-
-### Row Level Security (RLS)
-
-Las políticas RLS están configuradas en el schema SQL. Ajustar según necesidades de seguridad.
-
 ## 📚 Documentación
 
--
 
-## 🤝 Contribución
-
-Este es un proyecto privado. Para contribuciones, contactar al equipo de desarrollo.
 
 
