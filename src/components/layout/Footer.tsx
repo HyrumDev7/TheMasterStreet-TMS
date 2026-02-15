@@ -16,7 +16,7 @@ export default function Footer() {
             href="/"
             className="order-1 text-center text-lg font-bold uppercase tracking-tight text-white transition-colors hover:text-red-500 md:order-2"
           >
-            PROXIMAMENTE!
+            PRÓXIMAMENTE!
           </Link>
 
           {/* Derecha: Redes sociales */}

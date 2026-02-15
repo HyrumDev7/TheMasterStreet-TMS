@@ -5,11 +5,26 @@ export const dynamic = 'force-dynamic'
 
 const HERO_IMAGE_ID = 'hero-home'
 const CARD_IMAGES = [
-  { id: 'card-eventos', href: '/eventos', title: 'PRÓXIMOS EVENTOS', tags: ['BATALLAS', 'CYPHERS', 'WORKSHOPS'] },
+  {
+    id: 'card-eventos',
+    href: '/eventos',
+    title: 'PRÓXIMOS EVENTOS',
+    tags: ['BATALLAS', 'CYPHERS', 'WORKSHOPS'],
+  },
   { id: 'card-calendario', href: '/eventos', title: 'CALENDARIO', tags: ['AÑO', 'MES', 'SEMANA'] },
-  { id: 'card-noticias', href: '/noticias', title: 'NOTICIAS', tags: ['ENTRADAS', 'FREESTYLE', 'CULTURA'] },
+  {
+    id: 'card-noticias',
+    href: '/noticias',
+    title: 'NOTICIAS',
+    tags: ['ENTRADAS', 'FREESTYLE', 'CULTURA'],
+  },
   { id: 'card-shop', href: '/shop', title: 'SHOP', tags: ['ROPA', 'ENTRADAS'] },
-  { id: 'card-historia', href: '/nosotros', title: 'NUESTRA HISTORIA', tags: ['INICIOS', 'MOMENTOS', 'EL EQUIPO', 'SÉ TMS'] },
+  {
+    id: 'card-historia',
+    href: '/nosotros',
+    title: 'NUESTRA HISTORIA',
+    tags: ['INICIOS', 'MOMENTOS', 'EL EQUIPO', 'SÉ TMS'],
+  },
 ]
 
 export default async function HomePage() {
@@ -36,7 +51,10 @@ export default async function HomePage() {
         </div>
 
         {/* Decorative wave - derecha */}
-        <div className="absolute right-0 top-0 hidden h-full w-24 border-l border-white/10 md:block" aria-hidden />
+        <div
+          className="absolute right-0 top-0 hidden h-full w-24 border-l border-white/10 md:block"
+          aria-hidden
+        />
 
         {/* Contenido centrado */}
         <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
@@ -45,8 +63,11 @@ export default async function HomePage() {
             <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-3xl font-black tracking-tighter text-red-600 md:-top-8 md:text-5xl">
               TMAS
             </span>
-            <Link href="/" className="text-4xl font-bold uppercase tracking-tight md:text-6xl lg:text-7xl">
-              PROXIMAMENTE!
+            <Link
+              href="/"
+              className="text-4xl font-bold uppercase tracking-tight md:text-6xl lg:text-7xl"
+            >
+              PRÓXIMAMENTE!
             </Link>
           </div>
           <h1 className="text-xl font-medium uppercase tracking-widest text-white md:text-2xl lg:text-3xl">
@@ -57,7 +78,10 @@ export default async function HomePage() {
 
       {/* Sección de 5 cards */}
       <section className="relative bg-zinc-900 py-16 md:py-24">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.3),transparent)] opacity-50" aria-hidden />
+        <div
+          className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.3),transparent)] opacity-50"
+          aria-hidden
+        />
         <div className="container relative mx-auto px-4">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
             {CARD_IMAGES.map((card) => (
@@ -98,24 +122,29 @@ export default async function HomePage() {
           <div className="container mx-auto px-4">
             <div className="mb-8 flex items-center justify-between">
               <h2 className="text-2xl font-bold uppercase tracking-tight">Próximos Eventos</h2>
-              <Link href="/eventos" className="text-sm font-medium uppercase tracking-wide text-red-500 transition-colors hover:text-red-400">
+              <Link
+                href="/eventos"
+                className="text-sm font-medium uppercase tracking-wide text-red-500 transition-colors hover:text-red-400"
+              >
                 Ver todos →
               </Link>
             </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {eventosDestacados.map((evento: { id: string; slug?: string; titulo?: string; lugar?: string }) => (
-                <Link
-                  key={evento.id}
-                  href={`/eventos/${evento.slug ?? evento.id}`}
-                  className="overflow-hidden rounded-xl border border-white/10 bg-zinc-900 transition-all hover:border-white/20"
-                >
-                  <div className="aspect-video w-full bg-zinc-800" />
-                  <div className="p-4">
-                    <h3 className="font-bold">{evento.titulo}</h3>
-                    <p className="mt-1 text-sm text-zinc-400">{evento.lugar}</p>
-                  </div>
-                </Link>
-              ))}
+              {eventosDestacados.map(
+                (evento: { id: string; slug?: string; titulo?: string; lugar?: string }) => (
+                  <Link
+                    key={evento.id}
+                    href={`/eventos/${evento.slug ?? evento.id}`}
+                    className="overflow-hidden rounded-xl border border-white/10 bg-zinc-900 transition-all hover:border-white/20"
+                  >
+                    <div className="aspect-video w-full bg-zinc-800" />
+                    <div className="p-4">
+                      <h3 className="font-bold">{evento.titulo}</h3>
+                      <p className="mt-1 text-sm text-zinc-400">{evento.lugar}</p>
+                    </div>
+                  </Link>
+                )
+              )}
             </div>
           </div>
         </section>
