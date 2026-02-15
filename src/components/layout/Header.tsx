@@ -10,61 +10,57 @@ export default function Header() {
   const { user, loading, signOut } = useAuth()
 
   return (
-    <header className="sticky top-0 z-50 bg-black text-white">
-      <nav className="container mx-auto px-4 py-4">
+    <header className="absolute left-0 right-0 top-0 z-50 bg-transparent text-white">
+      <nav className="container mx-auto px-4 py-5">
         <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="text-2xl font-bold tracking-tight">
-            THE MASTER STREET
-          </Link>
+          {/* Menú - Desktop: links / Mobile: hamburger */}
+          <div className="flex items-center gap-8">
+            <button
+              className="flex items-center gap-2 text-sm font-medium uppercase tracking-wide md:hidden"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
+            >
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {mobileMenuOpen ? 'CERRAR' : 'MENÚ'}
+            </button>
+            <div className="hidden md:flex md:items-center md:gap-6">
+              <Link href="/eventos" className="text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300">
+                Próximos Eventos
+              </Link>
+              <Link href="/eventos" className="text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300">
+                Calendario
+              </Link>
+              <Link href="/noticias" className="text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300">
+                Noticias
+              </Link>
+              <Link href="/shop" className="text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300">
+                Shop
+              </Link>
+              <Link href="/nosotros" className="text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300">
+                Nuestra Historia
+              </Link>
+              <Link href="/carrito" className="transition-colors hover:text-gray-300">
+                <ShoppingCart size={20} />
+              </Link>
+            </div>
+          </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden items-center space-x-8 md:flex">
-            <Link
-              href="/eventos"
-              className="transition-colors hover:text-gray-300"
-            >
-              Próximos Eventos
-            </Link>
-            <Link
-              href="/convocatorias"
-              className="transition-colors hover:text-gray-300"
-            >
-              Convocatorias
-            </Link>
-            <Link
-              href="/noticias"
-              className="transition-colors hover:text-gray-300"
-            >
-              Noticias
-            </Link>
-            <Link
-              href="/nosotros"
-              className="transition-colors hover:text-gray-300"
-            >
-              Nuestra Historia
-            </Link>
-            <Link
-              href="/shop"
-              className="transition-colors hover:text-gray-300"
-            >
-              Shop
-            </Link>
-
+          {/* Iniciar sesión / Perfil */}
+          <div className="flex items-center gap-4">
             {loading ? (
-              <div className="h-10 w-20 animate-pulse rounded bg-gray-700" />
+              <div className="h-9 w-32 animate-pulse rounded bg-gray-700/50" />
             ) : user ? (
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center gap-3">
                 <Link
                   href="/perfil"
-                  className="flex items-center space-x-2 transition-colors hover:text-gray-300"
+                  className="flex items-center gap-2 text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300"
                 >
-                  <User size={20} />
-                  <span>{user.user_metadata?.alias || 'Mi Perfil'}</span>
+                  <User size={18} />
+                  {user.user_metadata?.alias || 'Mi Perfil'}
                 </Link>
                 <button
                   onClick={signOut}
-                  className="text-sm transition-colors hover:text-gray-300"
+                  className="text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300"
                 >
                   Salir
                 </button>
@@ -72,93 +68,48 @@ export default function Header() {
             ) : (
               <Link
                 href="/auth/login"
-                className="rounded bg-white px-4 py-2 text-black transition-colors hover:bg-gray-200"
+                className="rounded bg-[#DC2626] px-5 py-2.5 text-sm font-semibold uppercase tracking-wide text-white transition-colors hover:bg-red-600"
               >
-                Ingresar
+                Iniciar sesión
               </Link>
             )}
-
-            <Link href="/carrito" className="transition-colors hover:text-gray-300">
-              <ShoppingCart size={24} />
-            </Link>
           </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
         </div>
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="mt-4 space-y-4 border-t border-gray-800 pt-4 md:hidden">
-            <Link
-              href="/eventos"
-              className="block transition-colors hover:text-gray-300"
-              onClick={() => setMobileMenuOpen(false)}
-            >
+          <div className="absolute left-0 right-0 top-full mt-0 space-y-4 border-t border-white/20 bg-black/95 px-4 py-6 md:hidden">
+            <Link href="/eventos" className="block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300" onClick={() => setMobileMenuOpen(false)}>
               Próximos Eventos
             </Link>
-            <Link
-              href="/convocatorias"
-              className="block transition-colors hover:text-gray-300"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Convocatorias
+            <Link href="/eventos" className="block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300" onClick={() => setMobileMenuOpen(false)}>
+              Calendario
             </Link>
-            <Link
-              href="/noticias"
-              className="block transition-colors hover:text-gray-300"
-              onClick={() => setMobileMenuOpen(false)}
-            >
+            <Link href="/noticias" className="block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300" onClick={() => setMobileMenuOpen(false)}>
               Noticias
             </Link>
-            <Link
-              href="/nosotros"
-              className="block transition-colors hover:text-gray-300"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Nuestra Historia
-            </Link>
-            <Link
-              href="/shop"
-              className="block transition-colors hover:text-gray-300"
-              onClick={() => setMobileMenuOpen(false)}
-            >
+            <Link href="/shop" className="block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300" onClick={() => setMobileMenuOpen(false)}>
               Shop
             </Link>
-
-            <div className="border-t border-gray-800 pt-4">
+            <Link href="/nosotros" className="block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300" onClick={() => setMobileMenuOpen(false)}>
+              Nuestra Historia
+            </Link>
+            <Link href="/carrito" className="block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300" onClick={() => setMobileMenuOpen(false)}>
+              Carrito
+            </Link>
+            <div className="border-t border-white/20 pt-4">
               {user ? (
                 <>
-                  <Link
-                    href="/perfil"
-                    className="block transition-colors hover:text-gray-300"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
+                  <Link href="/perfil" className="block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300" onClick={() => setMobileMenuOpen(false)}>
                     Mi Perfil
                   </Link>
-                  <button
-                    onClick={() => {
-                      signOut()
-                      setMobileMenuOpen(false)
-                    }}
-                    className="mt-2 block transition-colors hover:text-gray-300"
-                  >
+                  <button onClick={() => { signOut(); setMobileMenuOpen(false) }} className="mt-2 block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300">
                     Salir
                   </button>
                 </>
               ) : (
-                <Link
-                  href="/auth/login"
-                  className="block transition-colors hover:text-gray-300"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Ingresar
+                <Link href="/auth/login" className="block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300" onClick={() => setMobileMenuOpen(false)}>
+                  Iniciar sesión
                 </Link>
               )}
             </div>

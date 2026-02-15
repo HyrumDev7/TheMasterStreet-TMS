@@ -2,13 +2,18 @@ import Link from 'next/link'
 import { createServerClient } from '@/lib/supabase/server'
 
 export const dynamic = 'force-dynamic'
-import EventCard from '@/components/eventos/EventCard'
-import { ArrowRight, Mic, Users, Calendar, Trophy } from 'lucide-react'
+
+const HERO_IMAGE_ID = 'hero-home'
+const CARD_IMAGES = [
+  { id: 'card-eventos', href: '/eventos', title: 'PRÓXIMOS EVENTOS', tags: ['BATALLAS', 'CYPHERS', 'WORKSHOPS'] },
+  { id: 'card-calendario', href: '/eventos', title: 'CALENDARIO', tags: ['AÑO', 'MES', 'SEMANA'] },
+  { id: 'card-noticias', href: '/noticias', title: 'NOTICIAS', tags: ['ENTRADAS', 'FREESTYLE', 'CULTURA'] },
+  { id: 'card-shop', href: '/shop', title: 'SHOP', tags: ['ROPA', 'ENTRADAS'] },
+  { id: 'card-historia', href: '/nosotros', title: 'NUESTRA HISTORIA', tags: ['INICIOS', 'MOMENTOS', 'EL EQUIPO', 'SÉ TMS'] },
+]
 
 export default async function HomePage() {
   const supabase = createServerClient()
-
-  // Obtener eventos destacados
   const { data: eventosDestacados } = await supabase
     .from('eventos')
     .select('*')
@@ -18,150 +23,121 @@ export default async function HomePage() {
     .order('fecha_inicio', { ascending: true })
     .limit(3)
 
-  // Obtener convocatorias abiertas
-  const { data: convocatorias } = await supabase
-    .from('convocatorias')
-    .select('id, titulo')
-    .eq('estado', 'open')
-    .limit(2)
-
   return (
-    <div>
+    <div className="bg-zinc-950 text-white">
       {/* Hero Section */}
-      <section className="relative bg-black py-24 text-white md:py-32">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="mb-6 text-5xl font-bold tracking-tight md:text-7xl">
-            THE MASTER STREET
-          </h1>
-          <p className="mb-8 text-xl text-gray-300 md:text-2xl">
+      <section className="relative flex min-h-[85vh] items-center justify-center overflow-hidden bg-zinc-900">
+        {/* Hero background - insertar hero-home.jpg en public/images/. Ver MEDIDAS_IMAGENES.md */}
+        <div
+          className="absolute inset-0 bg-zinc-800 bg-cover bg-center"
+          style={{ backgroundImage: 'url(/images/hero-home.jpg)' }}
+        >
+          <div className="absolute inset-0 bg-black/50" aria-hidden />
+        </div>
+
+        {/* Decorative wave - derecha */}
+        <div className="absolute right-0 top-0 hidden h-full w-24 border-l border-white/10 md:block" aria-hidden />
+
+        {/* Contenido centrado */}
+        <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
+          {/* Logo con acento TMAS */}
+          <div className="relative mb-6 inline-block">
+            <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-3xl font-black tracking-tighter text-red-600 md:-top-8 md:text-5xl">
+              TMAS
+            </span>
+            <Link href="/" className="text-4xl font-bold uppercase tracking-tight md:text-6xl lg:text-7xl">
+              THE MASTER STREET
+            </Link>
+          </div>
+          <h1 className="text-xl font-medium uppercase tracking-widest text-white md:text-2xl lg:text-3xl">
             Escribiendo una nueva parte de la historia
-          </p>
-          <div className="flex flex-col justify-center gap-4 sm:flex-row">
-            <Link
-              href="/eventos"
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-8 py-4 font-semibold text-black transition-colors hover:bg-gray-200"
-            >
-              Próximos Eventos
-              <ArrowRight size={20} />
-            </Link>
-            <Link
-              href="/convocatorias"
-              className="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-white px-8 py-4 font-semibold text-white transition-colors hover:bg-white hover:text-black"
-            >
-              Ver Convocatorias
-            </Link>
-          </div>
+          </h1>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="border-b bg-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-            <div className="text-center">
-              <div className="mb-2 flex justify-center">
-                <Mic className="h-8 w-8 text-gray-700" />
-              </div>
-              <div className="text-3xl font-bold">50+</div>
-              <div className="text-sm text-gray-600">Eventos realizados</div>
-            </div>
-            <div className="text-center">
-              <div className="mb-2 flex justify-center">
-                <Users className="h-8 w-8 text-gray-700" />
-              </div>
-              <div className="text-3xl font-bold">500+</div>
-              <div className="text-sm text-gray-600">Competidores</div>
-            </div>
-            <div className="text-center">
-              <div className="mb-2 flex justify-center">
-                <Calendar className="h-8 w-8 text-gray-700" />
-              </div>
-              <div className="text-3xl font-bold">5+</div>
-              <div className="text-sm text-gray-600">Años de historia</div>
-            </div>
-            <div className="text-center">
-              <div className="mb-2 flex justify-center">
-                <Trophy className="h-8 w-8 text-gray-700" />
-              </div>
-              <div className="text-3xl font-bold">100+</div>
-              <div className="text-sm text-gray-600">Batallas épicas</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Eventos Destacados */}
-      <section className="bg-gray-50 py-16">
-        <div className="container mx-auto px-4">
-          <div className="mb-8 flex items-center justify-between">
-            <h2 className="text-3xl font-bold">Próximos Eventos</h2>
-            <Link
-              href="/eventos"
-              className="flex items-center gap-1 text-sm font-medium text-gray-600 hover:text-black"
-            >
-              Ver todos
-              <ArrowRight size={16} />
-            </Link>
-          </div>
-
-          {eventosDestacados && eventosDestacados.length > 0 ? (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {eventosDestacados.map((evento) => (
-                <EventCard key={evento.id} evento={evento} />
-              ))}
-            </div>
-          ) : (
-            <div className="rounded-lg bg-white p-12 text-center">
-              <p className="text-gray-500">
-                No hay eventos destacados en este momento.
-              </p>
+      {/* Sección de 5 cards */}
+      <section className="relative bg-zinc-900 py-16 md:py-24">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.3),transparent)] opacity-50" aria-hidden />
+        <div className="container relative mx-auto px-4">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+            {CARD_IMAGES.map((card) => (
               <Link
-                href="/eventos"
-                className="mt-4 inline-block text-sm font-medium text-black hover:underline"
+                key={card.id}
+                href={card.href}
+                className="group flex flex-col overflow-hidden rounded-xl border border-white/10 bg-zinc-800/80 transition-all hover:border-white/30 hover:bg-zinc-800"
               >
-                Ver todos los eventos
+                {/* Imagen de la card - insertar {card.id}.jpg en public/images/. Ver MEDIDAS_IMAGENES.md */}
+                <div
+                  className="aspect-[4/3] w-full bg-zinc-700 bg-cover bg-center transition-transform group-hover:scale-[1.02]"
+                  style={{ backgroundImage: `url(/images/${card.id}.jpg)` }}
+                />
+                <div className="flex flex-1 flex-col justify-between p-4">
+                  <h2 className="mb-3 text-sm font-bold uppercase tracking-wide transition-colors group-hover:text-red-500">
+                    {card.title} →
+                  </h2>
+                  <div className="flex flex-wrap gap-2">
+                    {card.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded border border-white/30 px-2 py-1 text-xs font-medium uppercase tracking-wide text-white/90"
+                      >
+                        - {tag} -
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Eventos destacados - si hay datos */}
+      {eventosDestacados && eventosDestacados.length > 0 && (
+        <section className="border-t border-white/10 bg-zinc-950 py-16">
+          <div className="container mx-auto px-4">
+            <div className="mb-8 flex items-center justify-between">
+              <h2 className="text-2xl font-bold uppercase tracking-tight">Próximos Eventos</h2>
+              <Link href="/eventos" className="text-sm font-medium uppercase tracking-wide text-red-500 transition-colors hover:text-red-400">
+                Ver todos →
               </Link>
             </div>
-          )}
-        </div>
-      </section>
-
-      {/* Convocatorias CTA */}
-      {convocatorias && convocatorias.length > 0 && (
-        <section className="bg-black py-16 text-white">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="mb-4 text-3xl font-bold">¿Quieres participar?</h2>
-            <p className="mb-8 text-lg text-gray-300">
-              Hay {convocatorias.length} convocatoria{convocatorias.length > 1 ? 's' : ''} abierta{convocatorias.length > 1 ? 's' : ''}
-            </p>
-            <Link
-              href="/convocatorias"
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-8 py-4 font-semibold text-black transition-colors hover:bg-gray-200"
-            >
-              Ver Convocatorias
-              <ArrowRight size={20} />
-            </Link>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {eventosDestacados.map((evento: { id: string; slug?: string; titulo?: string; lugar?: string }) => (
+                <Link
+                  key={evento.id}
+                  href={`/eventos/${evento.slug ?? evento.id}`}
+                  className="overflow-hidden rounded-xl border border-white/10 bg-zinc-900 transition-all hover:border-white/20"
+                >
+                  <div className="aspect-video w-full bg-zinc-800" />
+                  <div className="p-4">
+                    <h3 className="font-bold">{evento.titulo}</h3>
+                    <p className="mt-1 text-sm text-zinc-400">{evento.lugar}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </section>
       )}
 
       {/* Newsletter */}
-      <section className="py-16">
+      <section className="border-t border-white/10 bg-zinc-900 py-16">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-xl text-center">
-            <h2 className="mb-4 text-3xl font-bold">Mantente informado</h2>
-            <p className="mb-8 text-gray-600">
+            <h2 className="mb-2 text-2xl font-bold uppercase tracking-tight">Mantente informado</h2>
+            <p className="mb-6 text-sm text-zinc-400">
               Suscríbete para recibir noticias sobre eventos, convocatorias y más.
             </p>
-            <form className="flex flex-col gap-4 sm:flex-row">
+            <form className="flex flex-col gap-3 sm:flex-row sm:justify-center">
               <input
                 type="email"
                 placeholder="tu@email.com"
-                className="flex-1 rounded-lg border border-gray-300 px-4 py-3 focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
+                className="rounded-lg border border-white/20 bg-zinc-800 px-4 py-3 text-white placeholder:text-zinc-500 focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
               />
               <button
                 type="submit"
-                className="rounded-lg bg-black px-6 py-3 font-semibold text-white transition-colors hover:bg-gray-800"
+                className="rounded-lg bg-red-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-red-500"
               >
                 Suscribirse
               </button>
