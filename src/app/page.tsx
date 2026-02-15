@@ -40,8 +40,8 @@ export default async function HomePage() {
 
   return (
     <div className="bg-zinc-950 text-white">
-      {/* Hero Section */}
-      <section className="relative flex min-h-[85vh] items-center justify-center overflow-hidden bg-zinc-900">
+      {/* Hero Section - responsive móvil */}
+      <section className="relative flex min-h-[70vh] items-center justify-center overflow-hidden bg-zinc-900 sm:min-h-[80vh] lg:min-h-[85vh]">
         {/* Hero background - insertar hero-home.jpg en public/images/. Ver MEDIDAS_IMAGENES.md */}
         <div
           className="absolute inset-0 bg-zinc-800 bg-cover bg-center"
@@ -56,34 +56,34 @@ export default async function HomePage() {
           aria-hidden
         />
 
-        {/* Contenido centrado */}
-        <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
+        {/* Contenido centrado - responsive */}
+        <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6">
           {/* Logo con acento TMAS */}
-          <div className="relative mb-6 inline-block">
-            <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-3xl font-black tracking-tighter text-red-600 md:-top-8 md:text-5xl">
+          <div className="relative mb-4 inline-block sm:mb-6">
+            <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-2xl font-black tracking-tighter text-red-600 sm:-top-6 sm:text-3xl md:-top-8 md:text-5xl">
               TMAS
             </span>
             <Link
               href="/"
-              className="text-4xl font-bold uppercase tracking-tight md:text-6xl lg:text-7xl"
+              className="text-3xl font-bold uppercase tracking-tight sm:text-4xl md:text-6xl lg:text-7xl"
             >
               PRÓXIMAMENTE!
             </Link>
           </div>
-          <h1 className="text-xl font-medium uppercase tracking-widest text-white md:text-2xl lg:text-3xl">
+          <h1 className="text-base font-medium uppercase tracking-widest text-white sm:text-xl md:text-2xl lg:text-3xl">
             Escribiendo una nueva parte de la historia
           </h1>
         </div>
       </section>
 
-      {/* Sección de 5 cards */}
-      <section className="relative bg-zinc-900 py-16 md:py-24">
+      {/* Sección de 5 cards - responsive móvil */}
+      <section className="relative bg-zinc-900 py-10 sm:py-16 md:py-24">
         <div
           className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.3),transparent)] opacity-50"
           aria-hidden
         />
-        <div className="container relative mx-auto px-4">
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="container relative mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 md:grid-cols-3 lg:grid-cols-5">
             {CARD_IMAGES.map((card) => (
               <Link
                 key={card.id}
@@ -95,7 +95,7 @@ export default async function HomePage() {
                   className="aspect-[4/3] w-full bg-zinc-700 bg-cover bg-center transition-transform group-hover:scale-[1.02]"
                   style={{ backgroundImage: `url(/images/${card.id}.jpg)` }}
                 />
-                <div className="flex flex-1 flex-col justify-between p-4">
+                <div className="flex flex-1 flex-col justify-between p-3 sm:p-4">
                   <h2 className="mb-3 text-sm font-bold uppercase tracking-wide transition-colors group-hover:text-red-500">
                     {card.title} →
                   </h2>
@@ -162,11 +162,12 @@ export default async function HomePage() {
               <input
                 type="email"
                 placeholder="tu@email.com"
-                className="rounded-lg border border-white/20 bg-zinc-800 px-4 py-3 text-white placeholder:text-zinc-500 focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
+                autoComplete="email"
+                className="min-h-[44px] rounded-lg border border-white/20 bg-zinc-800 px-4 py-3 text-base text-white placeholder:text-zinc-500 focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
               />
               <button
                 type="submit"
-                className="rounded-lg bg-red-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-red-500"
+                className="min-h-[44px] rounded-lg bg-red-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-red-500"
               >
                 Suscribirse
               </button>

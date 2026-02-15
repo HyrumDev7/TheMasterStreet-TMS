@@ -24,19 +24,34 @@ export default function Header() {
               {mobileMenuOpen ? 'CERRAR' : 'MENÚ'}
             </button>
             <div className="hidden md:flex md:items-center md:gap-6">
-              <Link href="/eventos" className="text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300">
+              <Link
+                href="/eventos"
+                className="text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300"
+              >
                 Próximos Eventos
               </Link>
-              <Link href="/eventos" className="text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300">
+              <Link
+                href="/eventos"
+                className="text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300"
+              >
                 Calendario
               </Link>
-              <Link href="/noticias" className="text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300">
+              <Link
+                href="/noticias"
+                className="text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300"
+              >
                 Noticias
               </Link>
-              <Link href="/shop" className="text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300">
+              <Link
+                href="/shop"
+                className="text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300"
+              >
                 Shop
               </Link>
-              <Link href="/nosotros" className="text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300">
+              <Link
+                href="/nosotros"
+                className="text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300"
+              >
                 Nuestra Historia
               </Link>
               <Link href="/carrito" className="transition-colors hover:text-gray-300">
@@ -79,36 +94,74 @@ export default function Header() {
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <div className="absolute left-0 right-0 top-full mt-0 space-y-4 border-t border-white/20 bg-black/95 px-4 py-6 md:hidden">
-            <Link href="/eventos" className="block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300" onClick={() => setMobileMenuOpen(false)}>
+            <Link
+              href="/eventos"
+              className="block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300"
+              onClick={() => setMobileMenuOpen(false)}
+            >
               Próximos Eventos
             </Link>
-            <Link href="/eventos" className="block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300" onClick={() => setMobileMenuOpen(false)}>
+            <Link
+              href="/eventos"
+              className="block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300"
+              onClick={() => setMobileMenuOpen(false)}
+            >
               Calendario
             </Link>
-            <Link href="/noticias" className="block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300" onClick={() => setMobileMenuOpen(false)}>
+            <Link
+              href="/noticias"
+              className="block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300"
+              onClick={() => setMobileMenuOpen(false)}
+            >
               Noticias
             </Link>
-            <Link href="/shop" className="block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300" onClick={() => setMobileMenuOpen(false)}>
+            <Link
+              href="/shop"
+              className="block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300"
+              onClick={() => setMobileMenuOpen(false)}
+            >
               Shop
             </Link>
-            <Link href="/nosotros" className="block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300" onClick={() => setMobileMenuOpen(false)}>
+            <Link
+              href="/nosotros"
+              className="block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300"
+              onClick={() => setMobileMenuOpen(false)}
+            >
               Nuestra Historia
             </Link>
-            <Link href="/carrito" className="block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300" onClick={() => setMobileMenuOpen(false)}>
+            <Link
+              href="/carrito"
+              className="block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300"
+              onClick={() => setMobileMenuOpen(false)}
+            >
               Carrito
             </Link>
             <div className="border-t border-white/20 pt-4">
               {user ? (
                 <>
-                  <Link href="/perfil" className="block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300" onClick={() => setMobileMenuOpen(false)}>
+                  <Link
+                    href="/perfil"
+                    className="block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
                     Mi Perfil
                   </Link>
-                  <button onClick={() => { signOut(); setMobileMenuOpen(false) }} className="mt-2 block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300">
+                  <button
+                    onClick={() => {
+                      signOut()
+                      setMobileMenuOpen(false)
+                    }}
+                    className="mt-2 block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300"
+                  >
                     Salir
                   </button>
                 </>
               ) : (
-                <Link href="/auth/login" className="block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300" onClick={() => setMobileMenuOpen(false)}>
+                <Link
+                  href="/auth/login"
+                  className="block text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
                   Iniciar sesión
                 </Link>
               )}
