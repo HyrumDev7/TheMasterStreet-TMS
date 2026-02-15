@@ -12,8 +12,11 @@ export default function Footer() {
           </p>
 
           {/* Centro: Nombre */}
-          <Link href="/" className="order-1 text-center text-lg font-bold uppercase tracking-tight text-white transition-colors hover:text-red-500 md:order-2">
-            The Master Street
+          <Link
+            href="/"
+            className="order-1 text-center text-lg font-bold uppercase tracking-tight text-white transition-colors hover:text-red-500 md:order-2"
+          >
+            PROXIMAMENTE!
           </Link>
 
           {/* Derecha: Redes sociales */}

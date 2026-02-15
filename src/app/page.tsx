@@ -46,7 +46,7 @@ export default async function HomePage() {
               TMAS
             </span>
             <Link href="/" className="text-4xl font-bold uppercase tracking-tight md:text-6xl lg:text-7xl">
-              THE MASTER STREET
+              PROXIMAMENTE!
             </Link>
           </div>
           <h1 className="text-xl font-medium uppercase tracking-widest text-white md:text-2xl lg:text-3xl">
