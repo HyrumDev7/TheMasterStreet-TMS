@@ -64,6 +64,7 @@ El schema completo está en `database/schema.sql`. Ejecutar en Supabase Dashboar
 
 ## 📚 Documentación
 
+Toda la documentación del proyecto está unificada en **[DOCUMENTACION.md](./DOCUMENTACION.md)** (configuración, producción, correos, deploy, Git, medidas de imágenes, estructura del frontend, etc.).
 
 
 

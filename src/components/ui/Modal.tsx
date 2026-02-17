@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react'
 import { X } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
+import styles from './Modal.module.css'
 
 interface ModalProps {
   isOpen: boolean
@@ -58,15 +59,12 @@ export default function Modal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+      className={cn(styles.root, 'fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4')}
       onClick={handleBackdropClick}
     >
       <div
         ref={modalRef}
-        className={cn(
-          'w-full rounded-lg bg-white shadow-xl',
-          sizeClasses[size]
-        )}
+        className={cn(styles.content, 'w-full rounded-lg bg-white shadow-xl', sizeClasses[size])}
         role="dialog"
         aria-modal="true"
         aria-labelledby={title ? 'modal-title' : undefined}

@@ -9,6 +9,7 @@ import { supabase } from '@/lib/supabase/client'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import Alert from '@/components/ui/Alert'
+import styles from './page.module.css'
 
 export default function RecuperarPasswordPage() {
   const [loading, setLoading] = useState(false)
@@ -50,8 +51,8 @@ export default function RecuperarPasswordPage() {
 
   if (success) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12">
-        <div className="w-full max-w-md space-y-8 text-center">
+      <div className={`${styles.root} flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12`}>
+        <div className={`${styles.form} w-full max-w-md space-y-8 text-center`}>
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Revisa tu Email</h1>
             <p className="mt-4 text-gray-600">
@@ -72,8 +73,8 @@ export default function RecuperarPasswordPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12">
-      <div className="w-full max-w-md space-y-8">
+    <div className={`${styles.root} flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12`}>
+      <div className={`${styles.form} w-full max-w-md space-y-8`}>
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900">Recuperar Contraseña</h1>
           <p className="mt-2 text-sm text-gray-600">

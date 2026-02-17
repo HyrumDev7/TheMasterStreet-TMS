@@ -1,10 +1,26 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import {
+  CalendarDays,
+  Calendar,
+  Newspaper,
+  ShoppingBag,
+  BookOpen,
+} from 'lucide-react'
 import { createServerClient } from '@/lib/supabase/server'
+import { CalendarCardControls } from '@/components/calendar/CalendarCardControls'
+import styles from './page.module.css'
 
 export const dynamic = 'force-dynamic'
 
-const HERO_IMAGE_ID = 'hero-home'
+const CARD_TITLE_CLASS: Record<string, string> = {
+  'card-eventos': styles.cardTitleBtnEventos,
+  'card-calendario': '', /* estilo aplicado por .cardCalendario .cardTitleBtn */
+  'card-noticias': styles.cardTitleBtnNoticias,
+  'card-shop': styles.cardTitleBtnShop,
+  'card-historia': styles.cardTitleBtnHistoria,
+}
+
 const CARD_IMAGES = [
   {
     id: 'card-eventos',
@@ -12,6 +28,7 @@ const CARD_IMAGES = [
     href: '/eventos',
     title: 'PRÓXIMOS EVENTOS',
     tags: ['BATALLAS', 'CYPHERS', 'WORKSHOPS'],
+    Icon: CalendarDays,
   },
   {
     id: 'card-calendario',
@@ -19,6 +36,7 @@ const CARD_IMAGES = [
     href: '/eventos',
     title: 'CALENDARIO',
     tags: ['AÑO', 'MES', 'SEMANA'],
+    Icon: Calendar,
   },
   {
     id: 'card-noticias',
@@ -26,14 +44,23 @@ const CARD_IMAGES = [
     href: '/noticias',
     title: 'NOTICIAS',
     tags: ['ENTRADAS', 'FREESTYLE', 'CULTURA'],
+    Icon: Newspaper,
   },
-  { id: 'card-shop', imgExt: 'png', href: '/shop', title: 'SHOP', tags: ['ROPA', 'ENTRADAS'] },
+  {
+    id: 'card-shop',
+    imgExt: 'png',
+    href: '/shop',
+    title: 'SHOP',
+    tags: ['ROPA', 'ENTRADAS'],
+    Icon: ShoppingBag,
+  },
   {
     id: 'card-historia',
     imgExt: 'png',
     href: '/nosotros',
     title: 'NUESTRA HISTORIA',
     tags: ['INICIOS', 'MOMENTOS', 'EL EQUIPO', 'SÉ TMS'],
+    Icon: BookOpen,
   },
 ]
 
@@ -49,89 +76,113 @@ export default async function HomePage() {
     .limit(3)
 
   return (
-    <div className="bg-zinc-950 text-white">
-      {/* Hero Section - responsive móvil */}
-      <section className="relative flex min-h-[70vh] items-center justify-center overflow-hidden bg-zinc-900 sm:min-h-[80vh] lg:min-h-[85vh]">
-        {/* Hero background - insertar hero-home.jpg en public/images/. Ver MEDIDAS_IMAGENES.md */}
+    <div className={styles.root}>
+      {/* Hero + Cards: imagen de fondo unificada que ocupa todo el transfondo */}
+      <div className={styles.heroAndCardsWrap}>
         <div
-          className="absolute inset-0 bg-zinc-800 bg-cover bg-center"
+          className={styles.heroBg}
           style={{ backgroundImage: 'url(/images/hero-home.png)' }}
         >
-          <div className="absolute inset-0 bg-black/50" aria-hidden />
+          <div className={styles.heroBgOverlay} aria-hidden />
         </div>
-
-        {/* Decorative wave - derecha */}
-        <div
-          className="absolute right-0 top-0 hidden h-full w-24 border-l border-white/10 md:block"
-          aria-hidden
-        />
-
-        {/* Contenido centrado - responsive */}
-        <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6">
-          {/* Logo TMAS / THE MASTER STREET - tal cual diseño gráfico (fondo teal, TMAS rojo, banner gris) */}
-          <div className="relative mb-4 inline-block px-4 sm:mb-6 sm:px-6">
-            <Link href="/" className="block">
+        <div className={styles.heroBgWave} aria-hidden />
+        <section className={styles.hero}>
+          <div className={styles.heroContent}>
+          <div className={styles.logoWrap}>
+            <Link href="/" className="block" aria-label="The Master Street - Inicio">
               <Image
                 src="/images/logo-tmas.png"
-                alt="The Master Street - TMAS"
-                width={400}
-                height={150}
-                className="h-auto w-full max-w-[280px] object-contain drop-shadow-xl sm:max-w-[360px] md:max-w-[420px]"
+                alt="The Master Street"
+                width={920}
+                height={345}
+                className={styles.logoImage}
                 priority
               />
             </Link>
           </div>
-          <h1 className="text-base font-medium uppercase tracking-widest text-red-600 sm:text-xl md:text-2xl lg:text-3xl">
+          <h1 className={styles.slogan}>
             Escribiendo una nueva parte de la historia
           </h1>
-        </div>
-      </section>
+          </div>
+        </section>
 
-      {/* Sección de 5 cards - responsive móvil */}
-      <section className="relative bg-zinc-900 py-10 sm:py-16 md:py-24">
-        <div
-          className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.3),transparent)] opacity-50"
-          aria-hidden
-        />
-        <div className="container relative mx-auto px-4 sm:px-6">
+        {/* Sección de 5 cards (mismo transfondo Hero) */}
+        <section className={styles.cardsSection}>
+          <div className="container relative mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 md:grid-cols-3 lg:grid-cols-5">
-            {CARD_IMAGES.map((card) => (
-              <Link
-                key={card.id}
-                href={card.href}
-                className="group flex flex-col overflow-hidden rounded-xl border border-white/10 bg-zinc-800/80 transition-all hover:border-white/30 hover:bg-zinc-800"
-              >
-                {/* Imagen de la card - insertar {card.id}.jpg en public/images/. Ver MEDIDAS_IMAGENES.md */}
+            {CARD_IMAGES.map((card) => {
+              const CardIcon = card.Icon
+              const isCalendario = card.id === 'card-calendario'
+              const imageEl = (
                 <div
-                  className="aspect-[4/3] w-full bg-zinc-700 bg-cover bg-center transition-transform group-hover:scale-[1.02]"
+                  className={styles.cardImage}
                   style={{
                     backgroundImage: `url(/images/${card.id}.${'imgExt' in card ? card.imgExt : 'jpg'})`,
                   }}
                 />
-                <div className="flex flex-1 flex-col justify-between p-3 sm:p-4">
-                  <h2 className="mb-3 text-sm font-bold uppercase tracking-wide transition-colors group-hover:text-red-500">
-                    {card.title} →
-                  </h2>
-                  <div className="flex flex-wrap gap-2">
-                    {card.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded border border-white/30 px-2 py-1 text-xs font-medium uppercase tracking-wide text-white/90"
-                      >
-                        - {tag} -
+              )
+              const titleEl = (
+                <>
+                  {isCalendario && (
+                    <CardIcon size={16} className={styles.cardTitleIcon} aria-hidden />
+                  )}
+                  <span className={styles.cardTitle}>
+                    {card.title.split(' ').map((word) => (
+                      <span key={word} className={styles.cardTitleLine}>
+                        {word}
                       </span>
                     ))}
+                    <span className={styles.cardTitleArrow}> →</span>
+                  </span>
+                </>
+              )
+              if (isCalendario) {
+                return (
+                  <div
+                    key={card.id}
+                    className={`${styles.card} ${styles.cardCalendario}`}
+                  >
+                    <Link href={card.href} className={styles.cardImageLink} aria-label={card.title}>
+                      {imageEl}
+                    </Link>
+                    <div className={styles.cardBody}>
+                      <Link href={card.href} className={`${styles.cardTitleBtn} ${CARD_TITLE_CLASS[card.id] ?? ''}`}>
+                        {titleEl}
+                      </Link>
+                      <CalendarCardControls className={styles.cardTags} />
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
+                )
+              }
+              return (
+                <Link key={card.id} href={card.href} className={styles.card}>
+                  {imageEl}
+                  <div className={styles.cardBody}>
+                    <span className={`${styles.cardTitleBtn} ${CARD_TITLE_CLASS[card.id] ?? ''}`}>
+                      {titleEl}
+                    </span>
+                    <div className={styles.cardTags}>
+                      {card.tags.map((tag, i) => (
+                        <span
+                          key={tag}
+                          className={i === 0 ? styles.cardTagLarge : styles.cardTagSmall}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </Link>
+              )
+            })}
           </div>
         </div>
-      </section>
+        </section>
+      </div>
 
       {/* Eventos destacados - si hay datos */}
       {eventosDestacados && eventosDestacados.length > 0 && (
-        <section className="border-t border-white/10 bg-zinc-950 py-16">
+        <section className={styles.eventosSection}>
           <div className="container mx-auto px-4">
             <div className="mb-8 flex items-center justify-between">
               <h2 className="text-2xl font-bold uppercase tracking-tight">Próximos Eventos</h2>

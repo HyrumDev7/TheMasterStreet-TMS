@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils/cn'
+import styles from './Badge.module.css'
 
 interface BadgeProps {
   children: React.ReactNode
@@ -29,6 +30,7 @@ export default function Badge({
   return (
     <span
       className={cn(
+        styles.root,
         'inline-flex items-center rounded-full font-medium',
         variants[variant],
         sizes[size],

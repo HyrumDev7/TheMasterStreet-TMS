@@ -10,6 +10,7 @@ import { formatearRut } from '@/lib/validations/rut'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import Alert from '@/components/ui/Alert'
+import styles from './page.module.css'
 
 export default function RegistroPage() {
   const router = useRouter()
@@ -68,8 +69,8 @@ export default function RegistroPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12">
-      <div className="w-full max-w-md space-y-8">
+    <div className={`${styles.root} flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12`}>
+      <div className={`${styles.form} w-full max-w-md space-y-8`}>
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900">Crear Cuenta</h1>
           <p className="mt-2 text-sm text-gray-600">

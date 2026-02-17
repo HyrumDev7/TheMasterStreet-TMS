@@ -1,5 +1,6 @@
 import { createServerClient } from '@/lib/supabase/server'
 import EventCard from '@/components/eventos/EventCard'
+import styles from './page.module.css'
 
 export const dynamic = 'force-dynamic'
 
@@ -23,7 +24,7 @@ export default async function EventosPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`${styles.root} min-h-screen bg-gray-50`}>
       {/* Hero */}
       <div className="bg-black py-16 text-white">
         <div className="container mx-auto px-4 text-center">

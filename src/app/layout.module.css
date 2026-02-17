@@ -1,0 +1,8 @@
+/* Layout raíz: body y contenedor principal */
+.root {
+  /* Estilos específicos del layout (Tailwind cubre la mayoría) */
+}
+
+.main {
+  /* Contenedor <main> */
+}

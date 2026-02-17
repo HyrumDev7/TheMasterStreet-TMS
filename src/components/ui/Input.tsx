@@ -1,5 +1,6 @@
 import { InputHTMLAttributes, forwardRef } from 'react'
 import { clsx } from 'clsx'
+import styles from './Input.module.css'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string
@@ -12,7 +13,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`
 
     return (
-      <div className="w-full">
+      <div className={clsx(styles.root, 'w-full')}>
         {label && (
           <label
             htmlFor={inputId}
@@ -25,6 +26,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           id={inputId}
           className={clsx(
+            styles.input,
             'block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black',
             error && 'border-red-500 focus:border-red-500 focus:ring-red-500',
             className

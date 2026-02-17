@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { Calendar, MapPin, Users } from 'lucide-react'
 import { formatDate, formatPrice } from '@/lib/utils/format'
 import Badge from '@/components/ui/Badge'
+import styles from './EventCard.module.css'
 
 interface EventCardProps {
   evento: {
@@ -43,9 +44,9 @@ export default function EventCard({ evento }: EventCardProps) {
 
   return (
     <Link href={`/eventos/${evento.slug}`}>
-      <article className="group overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-lg">
+      <article className={`${styles.root} group overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-lg`}>
         {/* Imagen */}
-        <div className="relative aspect-video overflow-hidden bg-gray-100">
+        <div className={`${styles.image} relative aspect-video overflow-hidden bg-gray-100`}>
           {evento.imagen_portada_url ? (
             <Image
               src={evento.imagen_portada_url}
@@ -71,7 +72,7 @@ export default function EventCard({ evento }: EventCardProps) {
         </div>
 
         {/* Contenido */}
-        <div className="p-4">
+        <div className={`${styles.body} p-4`}>
           <h3 className="mb-2 text-lg font-semibold text-gray-900 group-hover:text-gray-700">
             {evento.titulo}
           </h3>

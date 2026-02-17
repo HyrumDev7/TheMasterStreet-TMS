@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Calendar, Users, Clock } from 'lucide-react'
 import { formatDate } from '@/lib/utils/format'
 import Badge from '@/components/ui/Badge'
+import styles from './page.module.css'
 
 export const dynamic = 'force-dynamic'
 
@@ -35,7 +36,7 @@ export default async function ConvocatoriasPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`${styles.root} min-h-screen bg-gray-50`}>
       {/* Hero */}
       <div className="bg-black py-16 text-white">
         <div className="container mx-auto px-4 text-center">

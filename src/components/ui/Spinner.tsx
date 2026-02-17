@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils/cn'
+import styles from './Spinner.module.css'
 
 interface SpinnerProps {
   size?: 'sm' | 'md' | 'lg'
@@ -15,6 +16,7 @@ export default function Spinner({ size = 'md', className }: SpinnerProps) {
   return (
     <div
       className={cn(
+        styles.root,
         'animate-spin rounded-full border-2 border-gray-300 border-t-black',
         sizes[size],
         className

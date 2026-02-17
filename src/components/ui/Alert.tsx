@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils/cn'
 import { AlertCircle, CheckCircle, Info, XCircle } from 'lucide-react'
+import styles from './Alert.module.css'
 
 interface AlertProps {
   children: React.ReactNode
@@ -34,6 +35,7 @@ export default function Alert({
   return (
     <div
       className={cn(
+        styles.root,
         'flex items-start gap-3 rounded-lg border p-4',
         variants[variant].container,
         className

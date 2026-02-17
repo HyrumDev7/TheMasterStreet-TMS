@@ -3,6 +3,7 @@ import { createServerClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { User, Ticket, FileText, Video, Settings } from 'lucide-react'
 import Card from '@/components/ui/Card'
+import styles from './page.module.css'
 
 export const dynamic = 'force-dynamic'
 
@@ -67,7 +68,7 @@ export default async function PerfilPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className={`${styles.root} min-h-screen bg-gray-50 py-12`}>
       <div className="container mx-auto px-4">
         {/* Header del perfil */}
         <Card className="mb-8">

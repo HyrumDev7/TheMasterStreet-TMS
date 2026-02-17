@@ -4,14 +4,15 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import { Menu, X, User, ShoppingCart } from 'lucide-react'
+import styles from './Header.module.css'
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { user, loading, signOut } = useAuth()
 
   return (
-    <header className="absolute left-0 right-0 top-0 z-50 bg-transparent text-white">
-      <nav className="container mx-auto px-4 py-5">
+    <header className={`${styles.root} absolute left-0 right-0 top-0 z-50 bg-transparent text-white`}>
+      <nav className={`${styles.nav} container mx-auto px-4 py-5`}>
         <div className="flex items-center justify-between">
           {/* Menú - Desktop: links / Mobile: hamburger */}
           <div className="flex items-center gap-8">

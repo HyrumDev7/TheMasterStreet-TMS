@@ -1,5 +1,6 @@
 import { HTMLAttributes, forwardRef } from 'react'
 import { clsx } from 'clsx'
+import styles from './Card.module.css'
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
   variant?: 'default' | 'outlined' | 'elevated'
@@ -16,7 +17,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
     return (
       <div
         ref={ref}
-        className={clsx('rounded-lg p-6', variants[variant], className)}
+        className={clsx(styles.root, styles.body, 'rounded-lg p-6', variants[variant], className)}
         {...props}
       >
         {children}
