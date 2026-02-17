@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { createServerClient } from '@/lib/supabase/server'
 
@@ -7,20 +8,29 @@ const HERO_IMAGE_ID = 'hero-home'
 const CARD_IMAGES = [
   {
     id: 'card-eventos',
+    imgExt: 'png',
     href: '/eventos',
     title: 'PRÓXIMOS EVENTOS',
     tags: ['BATALLAS', 'CYPHERS', 'WORKSHOPS'],
   },
-  { id: 'card-calendario', href: '/eventos', title: 'CALENDARIO', tags: ['AÑO', 'MES', 'SEMANA'] },
+  {
+    id: 'card-calendario',
+    imgExt: 'png',
+    href: '/eventos',
+    title: 'CALENDARIO',
+    tags: ['AÑO', 'MES', 'SEMANA'],
+  },
   {
     id: 'card-noticias',
+    imgExt: 'png',
     href: '/noticias',
     title: 'NOTICIAS',
     tags: ['ENTRADAS', 'FREESTYLE', 'CULTURA'],
   },
-  { id: 'card-shop', href: '/shop', title: 'SHOP', tags: ['ROPA', 'ENTRADAS'] },
+  { id: 'card-shop', imgExt: 'png', href: '/shop', title: 'SHOP', tags: ['ROPA', 'ENTRADAS'] },
   {
     id: 'card-historia',
+    imgExt: 'png',
     href: '/nosotros',
     title: 'NUESTRA HISTORIA',
     tags: ['INICIOS', 'MOMENTOS', 'EL EQUIPO', 'SÉ TMS'],
@@ -45,7 +55,7 @@ export default async function HomePage() {
         {/* Hero background - insertar hero-home.jpg en public/images/. Ver MEDIDAS_IMAGENES.md */}
         <div
           className="absolute inset-0 bg-zinc-800 bg-cover bg-center"
-          style={{ backgroundImage: 'url(/images/hero-home.jpg)' }}
+          style={{ backgroundImage: 'url(/images/hero-home.png)' }}
         >
           <div className="absolute inset-0 bg-black/50" aria-hidden />
         </div>
@@ -58,19 +68,20 @@ export default async function HomePage() {
 
         {/* Contenido centrado - responsive */}
         <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6">
-          {/* Logo con acento TMAS */}
-          <div className="relative mb-4 inline-block sm:mb-6">
-            <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-2xl font-black tracking-tighter text-red-600 sm:-top-6 sm:text-3xl md:-top-8 md:text-5xl">
-              TMAS
-            </span>
-            <Link
-              href="/"
-              className="text-3xl font-bold uppercase tracking-tight sm:text-4xl md:text-6xl lg:text-7xl"
-            >
-              PRÓXIMAMENTE!
+          {/* Logo TMAS / THE MASTER STREET - tal cual diseño gráfico (fondo teal, TMAS rojo, banner gris) */}
+          <div className="relative mb-4 inline-block px-4 sm:mb-6 sm:px-6">
+            <Link href="/" className="block">
+              <Image
+                src="/images/logo-tmas.png"
+                alt="The Master Street - TMAS"
+                width={400}
+                height={150}
+                className="h-auto w-full max-w-[280px] object-contain drop-shadow-xl sm:max-w-[360px] md:max-w-[420px]"
+                priority
+              />
             </Link>
           </div>
-          <h1 className="text-base font-medium uppercase tracking-widest text-white sm:text-xl md:text-2xl lg:text-3xl">
+          <h1 className="text-base font-medium uppercase tracking-widest text-red-600 sm:text-xl md:text-2xl lg:text-3xl">
             Escribiendo una nueva parte de la historia
           </h1>
         </div>
@@ -93,7 +104,9 @@ export default async function HomePage() {
                 {/* Imagen de la card - insertar {card.id}.jpg en public/images/. Ver MEDIDAS_IMAGENES.md */}
                 <div
                   className="aspect-[4/3] w-full bg-zinc-700 bg-cover bg-center transition-transform group-hover:scale-[1.02]"
-                  style={{ backgroundImage: `url(/images/${card.id}.jpg)` }}
+                  style={{
+                    backgroundImage: `url(/images/${card.id}.${'imgExt' in card ? card.imgExt : 'jpg'})`,
+                  }}
                 />
                 <div className="flex flex-1 flex-col justify-between p-3 sm:p-4">
                   <h2 className="mb-3 text-sm font-bold uppercase tracking-wide transition-colors group-hover:text-red-500">
@@ -149,32 +162,6 @@ export default async function HomePage() {
           </div>
         </section>
       )}
-
-      {/* Newsletter */}
-      <section className="border-t border-white/10 bg-zinc-900 py-16">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-xl text-center">
-            <h2 className="mb-2 text-2xl font-bold uppercase tracking-tight">Mantente informado</h2>
-            <p className="mb-6 text-sm text-zinc-400">
-              Suscríbete para recibir noticias sobre eventos, convocatorias y más.
-            </p>
-            <form className="flex flex-col gap-3 sm:flex-row sm:justify-center">
-              <input
-                type="email"
-                placeholder="tu@email.com"
-                autoComplete="email"
-                className="min-h-[44px] rounded-lg border border-white/20 bg-zinc-800 px-4 py-3 text-base text-white placeholder:text-zinc-500 focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
-              />
-              <button
-                type="submit"
-                className="min-h-[44px] rounded-lg bg-red-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-red-500"
-              >
-                Suscribirse
-              </button>
-            </form>
-          </div>
-        </div>
-      </section>
     </div>
   )
 }
