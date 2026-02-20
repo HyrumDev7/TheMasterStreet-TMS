@@ -8,7 +8,7 @@ import styles from './page.module.css'
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: 'Convocatorias | The Master Street',
+  title: 'Convocatorias',
   description: 'Aplica a las convocatorias abiertas para participar en nuestros eventos.',
 }
 

@@ -15,12 +15,15 @@ export const viewport = {
 }
 
 export const metadata: Metadata = {
-  title: 'THE MASTER STREET',
+  title: {
+    default: 'TMS',
+    template: '%s | TMS',
+  },
   description:
-    'Plataforma oficial de The Master Street. Batallas de freestyle, workshops, cyphers y más.',
-  keywords: 'freestyle, rap, batalla, hip hop, chile, concepción',
+    'TMS – The Master Street. Plataforma oficial: batallas de freestyle, workshops, cyphers y más. Escribiendo una nueva parte de la historia.',
+  keywords: 'TMS, The Master Street, freestyle, rap, batalla, hip hop, chile, concepción',
   openGraph: {
-    title: 'THE MASTER STREET',
+    title: 'TMS – The Master Street',
     description: 'Escribiendo una nueva parte de la historia del freestyle',
     type: 'website',
   },

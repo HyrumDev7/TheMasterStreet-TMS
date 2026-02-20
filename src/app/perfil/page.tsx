@@ -8,7 +8,7 @@ import styles from './page.module.css'
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: 'Mi Perfil | The Master Street',
+  title: 'Mi Perfil',
 }
 
 export default async function PerfilPage() {

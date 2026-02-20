@@ -5,7 +5,7 @@ import styles from './page.module.css'
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: 'Próximos Eventos | The Master Street',
+  title: 'Próximos Eventos',
   description: 'Descubre los próximos eventos de freestyle, batallas, workshops y más.',
 }
 
