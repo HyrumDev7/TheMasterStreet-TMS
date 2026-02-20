@@ -22,6 +22,11 @@ export const metadata: Metadata = {
   description:
     'TMS – The Master Street. Plataforma oficial: batallas de freestyle, workshops, cyphers y más. Escribiendo una nueva parte de la historia.',
   keywords: 'TMS, The Master Street, freestyle, rap, batalla, hip hop, chile, concepción',
+  icons: {
+    icon: '/images/logo-tmas.png',
+    shortcut: '/images/logo-tmas.png',
+    apple: '/images/logo-tmas.png',
+  },
   openGraph: {
     title: 'TMS – The Master Street',
     description: 'Escribiendo una nueva parte de la historia del freestyle',
