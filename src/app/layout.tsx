@@ -29,15 +29,16 @@ export const metadata: Metadata = {
   keywords: 'TMS, The Master Street, freestyle, rap, batalla, hip hop, chile, concepción',
   icons: {
     icon: [
+      { url: '/favicon.ico', sizes: 'any' },
       { url: '/images/logo-tmas.png', sizes: '48x48', type: 'image/png' },
       { url: '/images/logo-tmas.png', sizes: '96x96', type: 'image/png' },
       { url: '/images/logo-tmas.png', sizes: '192x192', type: 'image/png' },
     ],
-    shortcut: '/images/logo-tmas.png',
+    shortcut: '/favicon.ico',
     apple: '/images/logo-tmas.png',
   },
   openGraph: {
-    title: 'TMS – The Master Street',
+    title: 'TMS',
     description: 'Escribiendo una nueva parte de la historia del freestyle',
     type: 'website',
   },

@@ -1,5 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async rewrites() {
+    return [
+      { source: '/favicon.ico', destination: '/images/logo-tmas.png' },
+    ]
+  },
   typescript: {
     ignoreBuildErrors: true,
   },
