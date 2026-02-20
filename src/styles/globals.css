@@ -2,18 +2,49 @@
 @tailwind components;
 @tailwind utilities;
 
+/* TMS: variables para visual homogénea en escritorio y móvil */
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 245, 245, 245;
-  --background-end-rgb: 255, 255, 255;
+  --tms-bg: #09090b;
+  --tms-text: #ffffff;
+  --tms-accent: #dc2626;
+  --tms-card-bg: #374151;
+  --tms-spacing-xs: 0.5rem;
+  --tms-spacing-sm: 1rem;
+  --tms-spacing-md: 1.25rem;
+  --tms-spacing-lg: 1.5rem;
+  --tms-spacing-xl: 2rem;
+  --tms-spacing-2xl: 2.5rem;
+  --tms-spacing-3xl: 4rem;
+  --tms-spacing-4xl: 6rem;
+  --tms-radius: 12px;
+  --tms-radius-sm: 0.375rem;
+  --tms-page-px: 1rem;
+  --tms-section-py: 2.5rem;
+  /* Margen estándar invisible: iconos, logos y contenido nunca pegados al borde */
+  --tms-edge-margin: 1rem;
+  /* Carrusel: proporción estándar 32:9 (imágenes 1920×540 px) */
+  --tms-carousel-aspect: 32 / 9;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (min-width: 640px) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --tms-page-px: 1.5rem;
+    --tms-section-py: 4rem;
+    --tms-edge-margin: 1.5rem;
   }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --tms-section-py: 6rem;
+    --tms-edge-margin: 2rem;
+  }
+}
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 9, 9, 11;
+  --background-end-rgb: 9, 9, 11;
 }
 
 html {
@@ -22,9 +53,11 @@ html {
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb)))
-    rgb(var(--background-start-rgb));
-  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  background-color: var(--tms-bg);
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+    env(safe-area-inset-left);
+  /* Margen horizontal estándar del frontend: --tms-page-px (1rem móvil, 1.5rem ≥640px) en header, cards, footer */
+  box-sizing: border-box;
 }
 
 @layer utilities {

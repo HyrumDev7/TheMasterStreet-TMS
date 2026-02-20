@@ -38,14 +38,14 @@ export function CalendarCardControls({ className }: Readonly<{ className?: strin
     <fieldset className={`${className ?? ''} border-0 p-0 m-0 min-w-0`} aria-label="Calendario: selección de año, mes y semana">
       <legend className="sr-only">Calendario</legend>
       <div className="flex flex-col gap-1 sm:gap-1.5">
-        <label htmlFor={ID_AÑO} className="text-[0.8125rem] font-bold uppercase tracking-[0.05em] text-zinc-800 sm:text-[0.875rem]">
+        <label htmlFor={ID_AÑO} className="text-[0.8125rem] font-bold uppercase tracking-[0.05em] text-white sm:text-[0.875rem]">
           Año
         </label>
         <select
           id={ID_AÑO}
           value={year}
           onChange={(e) => setYear(Number(e.target.value))}
-          className="w-full rounded-md border border-zinc-300/90 bg-white/90 px-2.5 py-2 text-[0.8125rem] font-bold uppercase tracking-wide text-zinc-800 transition-colors hover:border-red-300 hover:bg-red-50/50 focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 sm:text-[0.875rem]"
+          className="w-full rounded-md border border-white/20 bg-zinc-700/80 px-2.5 py-2 text-[0.8125rem] font-bold uppercase tracking-wide text-white transition-colors hover:border-red-400/50 focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 sm:text-[0.875rem]"
         >
           {years.map((y) => (
             <option key={y} value={y}>
@@ -55,14 +55,14 @@ export function CalendarCardControls({ className }: Readonly<{ className?: strin
         </select>
       </div>
       <div className="flex flex-col gap-1 sm:gap-1.5">
-        <label htmlFor={ID_MES} className="text-[0.8125rem] font-bold uppercase tracking-[0.05em] text-zinc-800 sm:text-[0.875rem]">
+        <label htmlFor={ID_MES} className="text-[0.8125rem] font-bold uppercase tracking-[0.05em] text-white sm:text-[0.875rem]">
           Mes
         </label>
         <select
           id={ID_MES}
           value={month}
           onChange={(e) => setMonth(Number(e.target.value))}
-          className="w-full rounded-md border border-zinc-300/90 bg-white/90 px-2.5 py-2 text-[0.8125rem] font-bold uppercase tracking-wide text-zinc-800 transition-colors hover:border-red-300 hover:bg-red-50/50 focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 sm:text-[0.875rem]"
+          className="w-full rounded-md border border-white/20 bg-zinc-700/80 px-2.5 py-2 text-[0.8125rem] font-bold uppercase tracking-wide text-white transition-colors hover:border-red-400/50 focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 sm:text-[0.875rem]"
         >
           {MESES.map((nombre, i) => (
             <option key={nombre} value={i}>
@@ -72,12 +72,12 @@ export function CalendarCardControls({ className }: Readonly<{ className?: strin
         </select>
       </div>
       <div className="flex flex-col gap-1 sm:gap-1.5">
-        <span className="text-[0.8125rem] font-bold uppercase tracking-[0.05em] text-zinc-800 sm:text-[0.875rem]">
+        <span className="text-[0.8125rem] font-bold uppercase tracking-[0.05em] text-white sm:text-[0.875rem]">
           Semana
         </span>
         <output
           htmlFor={`${ID_AÑO} ${ID_MES}`}
-          className="flex items-center rounded-md border border-dashed border-zinc-300/90 bg-white/90 px-2.5 py-2 text-[0.8125rem] font-bold uppercase tracking-wide text-zinc-800 sm:text-[0.875rem]"
+          className="flex items-center rounded-md border border-dashed border-white/25 bg-zinc-700/80 px-2.5 py-2 text-[0.8125rem] font-bold uppercase tracking-wide text-white sm:text-[0.875rem]"
           aria-live="polite"
         >
           Semana {weekNumber}

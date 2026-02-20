@@ -1,13 +1,16 @@
 /* Página de inicio: Hero + cards + eventos destacados */
 .root {
-  background-color: #09090b;
-  color: white;
+  background-color: var(--tms-bg);
+  color: var(--tms-text);
 }
 
-/* Wrapper Hero + Cards: imagen de fondo ocupa todo el transfondo */
+/* Wrapper Hero + Cards: imagen completa. overflow visible para que logo y frase no se recorten */
 .heroAndCardsWrap {
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: visible;
+  min-height: 100vh;
+  margin-top: calc(-1 * env(safe-area-inset-top, 0px));
 }
 
 .heroBg {
@@ -16,6 +19,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  min-height: 100vh;
 }
 
 .heroBgOverlay {
@@ -40,59 +44,50 @@
   }
 }
 
+/* Hero: imagen completa. Logo en la división superior, por encima de la línea de la imagen */
 .hero {
   position: relative;
   z-index: 2;
-  display: flex;
-  min-height: 60vh;
-  align-items: flex-start;
-  justify-content: center;
-  padding-top: 5vh;
+  min-height: 100vh;
 }
 
-@media (min-width: 640px) {
-  .hero {
-    min-height: 80vh;
-    padding-top: 4vh;
-  }
-}
-
-@media (min-width: 1024px) {
-  .hero {
-    min-height: 85vh;
-    padding-top: 3vh;
-  }
-}
-
+/* Logo-tms y frase: bloque subido con -10rem; menú e Iniciar sesión quedan en el header sin tocar */
 .heroContent {
-  position: relative;
+  position: absolute;
+  top: -10rem;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
   z-index: 10;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 64rem;
-  padding: 0 1rem 2rem;
+  width: 90%;
+  max-width: 60rem;
+  padding: 0 var(--tms-edge-margin, 1rem);
   text-align: center;
+  box-sizing: border-box;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
 }
 
-@media (min-width: 640px) {
-  .heroContent {
-    padding: 0 1.5rem 2.5rem;
-  }
+.heroContent a {
+  pointer-events: auto;
 }
 
-/* Logo en grande. Frase roja pegada justo debajo (sin hueco). */
+/* Logo-tms + frase en el mismo bloque para que queden pegados */
 .logoWrap {
   position: relative;
-  margin-bottom: 0;
-  display: inline-block;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: min(94vw, 920px);
-  padding-left: 0.25rem;
-  padding-right: 0.25rem;
+  padding: 0 0.25rem;
 }
 
 @media (min-width: 640px) {
   .logoWrap {
-    margin-bottom: 0;
     width: min(88vw, 860px);
   }
 }
@@ -110,81 +105,95 @@
 }
 
 .logoImage {
+  display: block;
   height: auto;
   width: 100%;
   object-fit: contain;
   object-position: center;
+  vertical-align: top;
   /* Sombra marcada para que el logo lea bien encima del rapero y la multitud */
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5)) drop-shadow(0 10px 25px rgba(0, 0, 0, 0.45))
     drop-shadow(0 0 40px rgba(0, 0, 0, 0.25));
 }
 
-/* Frase roja pegada al logo (compensa hueco vacío del contorno de la imagen) */
+/* Frase pegada al logo: mismo bloque, separación mínima */
 .slogan {
-  font-size: 1rem;
+  display: block;
+  margin: 0.2rem 0 0;
+  padding: 0;
+  font-size: clamp(0.8125rem, 2vw, 1rem);
   font-weight: 500;
+  line-height: 1.25;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: #f3efef;
-  margin: -5em 0 0;
-  line-height: 1.2;
-}
-
-@media (min-width: 640px) {
-  .slogan {
-    font-size: 1.25rem;
-  }
-}
-
-@media (min-width: 768px) {
-  .slogan {
-    font-size: 1.5rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .slogan {
-    font-size: 1.875rem;
-  }
+  color: var(--tms-text);
 }
 
 .cardsSection {
   position: relative;
   z-index: 2;
-  padding-top: 2.5rem;
-  padding-bottom: 2.5rem;
-  /* Transparente: el Hero ocupa todo el transfondo (incluye espacio detrás de las cards) */
+  padding-top: var(--tms-section-py, 2.5rem);
+  padding-bottom: var(--tms-section-py, 2.5rem);
   background: transparent;
 }
 
+/* Contenedor de cards: mismo margen estándar que header/footer/hero */
+.cardsContainer {
+  width: 100%;
+  max-width: 88rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--tms-edge-margin, 1rem);
+  padding-right: var(--tms-edge-margin, 1rem);
+  box-sizing: border-box;
+}
+
+/* Grid: espaciado 20–30px entre cards, columnas según viewport */
+.cardsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
 @media (min-width: 640px) {
-  .cardsSection {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
+  .cardsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
   }
 }
 
 @media (min-width: 768px) {
-  .cardsSection {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
+  .cardsGrid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
-/* Cards: fondo blanco uniforme en las 5, esquinas redondeadas, imagen arriba */
+@media (min-width: 1024px) {
+  .cardsGrid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.75rem;
+  }
+}
+
+/* Cards: mismo radio y color en móvil y escritorio */
 .card {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border-radius: 0.5rem;
-  background-color: #ffffff;
+  border-radius: var(--tms-radius, 12px);
+  background-color: var(--tms-card-bg);
+  box-shadow:
+    4px 4px 12px rgba(0, 0, 0, 0.35),
+    8px 8px 24px rgba(0, 0, 0, 0.2);
   transition:
     box-shadow 0.2s,
     transform 0.2s;
 }
 
 .card:hover {
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  box-shadow:
+    6px 6px 16px rgba(0, 0, 0, 0.4),
+    12px 12px 32px rgba(0, 0, 0, 0.25);
   transform: translateY(-2px);
 }
 
@@ -192,9 +201,10 @@
   display: block;
 }
 
+/* Imagen ~55–60% de la altura de la card; proporción card ~2:1 (alto:ancho) como en el diseño */
 .cardImage {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 2 / 3;
   background-color: #d4d4d8;
   background-size: cover;
   background-position: center;
@@ -210,14 +220,16 @@
   flex: 1;
   flex-direction: column;
   justify-content: space-between;
-  padding: 1rem 1.25rem;
-  gap: 0.625rem;
+  padding: 1.25rem 1.5rem;
+  gap: 0.75rem;
+  background-color: var(--tms-card-bg);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 }
 
 @media (min-width: 640px) {
   .cardBody {
-    padding: 1.125rem 1.375rem;
-    gap: 0.75rem;
+    padding: 1.375rem 1.5rem;
+    gap: 0.875rem;
   }
 }
 
@@ -238,14 +250,14 @@
 }
 
 .cardTitleBtn:hover {
-  background-color: rgba(220, 38, 38, 0.08);
-  border-color: rgba(220, 38, 38, 0.2);
+  background-color: rgba(220, 38, 38, 0.18);
+  border-color: rgba(220, 38, 38, 0.35);
 }
 
 .cardTitleIcon {
   flex-shrink: 0;
   margin-top: 0.0625rem;
-  color: #52525b;
+  color: rgba(255, 255, 255, 0.85);
   transition: color 0.2s;
 }
 
@@ -302,26 +314,32 @@
   border-top-color: rgba(220, 38, 38, 0.3);
 }
 
-/* Título principal de la card: más tamaño para que resalte */
+/* Título principal de la card: diseño 1.2em–1.5em, bold, blanco, mayúsculas, sans-serif */
 .cardTitle {
   display: flex;
   flex-direction: column;
   margin: 0;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.25;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: #27272a;
+  color: #ffffff;
   transition: color 0.2s;
   gap: 0.0625rem;
 }
 
 @media (min-width: 640px) {
   .cardTitle {
-    font-size: 1.125rem;
+    font-size: 1.35rem;
     letter-spacing: 0.045em;
     gap: 0.125rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .cardTitle {
+    font-size: 1.5rem;
   }
 }
 
@@ -335,7 +353,7 @@
 }
 
 .cardTitleBtn:hover .cardTitle {
-  color: #dc2626;
+  color: #fca5a5;
 }
 
 .cardTags {
@@ -350,7 +368,7 @@
   }
 }
 
-/* Subtítulos: negrita y tamaño; efecto botón solo al pasar el mouse sobre cada uno */
+/* Subtítulos: referencia – blanco, más pequeño; efecto botón solo al hover */
 .cardTagLarge,
 .cardTagSmall {
   display: inline-block;
@@ -363,43 +381,54 @@
   line-height: 1.35;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #27272a;
+  color: rgba(255, 255, 255, 0.95);
   transition:
     background-color 0.2s,
     border-color 0.2s,
     color 0.2s;
 }
 
+/* Subtítulos: diseño 0.9em–1.1em (14–18px) */
 .cardTagLarge {
-  font-size: 0.8125rem;
+  font-size: 0.9rem;
 }
 
 .cardTagSmall {
-  font-size: 0.75rem;
+  font-size: 0.875rem;
 }
 
 @media (min-width: 640px) {
   .cardTagLarge {
-    font-size: 0.875rem;
+    font-size: 1rem;
     padding: 0.4375rem 0.75rem;
   }
 
   .cardTagSmall {
-    font-size: 0.8125rem;
+    font-size: 0.9rem;
     padding: 0.375rem 0.625rem;
   }
 }
 
 .cardTagLarge:hover,
 .cardTagSmall:hover {
-  background-color: rgba(220, 38, 38, 0.08);
-  border-color: rgba(220, 38, 38, 0.25);
-  color: #991b1b;
+  background-color: rgba(220, 38, 38, 0.2);
+  border-color: rgba(220, 38, 38, 0.4);
+  color: #fca5a5;
 }
 
 .eventosSection {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  background-color: #09090b;
-  padding-top: 4rem;
-  padding-bottom: 4rem;
+  background-color: var(--tms-bg);
+  padding-top: var(--tms-section-py, 2.5rem);
+  padding-bottom: var(--tms-section-py, 2.5rem);
+}
+
+.eventosContainer {
+  width: 100%;
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--tms-edge-margin, 1rem);
+  padding-right: var(--tms-edge-margin, 1rem);
+  box-sizing: border-box;
 }

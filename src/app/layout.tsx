@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import '@/styles/globals.css'
+import { MenuProvider } from '@/contexts/MenuContext'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import styles from './layout.module.css'
@@ -28,10 +29,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
-      <body className={`${styles.root} ${inter.className} bg-zinc-950 text-white antialiased`}>
-        <Header />
-        <main className={`${styles.main} min-h-screen bg-zinc-950 text-white`}>{children}</main>
-        <Footer />
+      <body className={`${styles.root} ${inter.className} antialiased`}>
+        <MenuProvider>
+          <Header />
+          <main className={styles.main}>{children}</main>
+          <Footer />
+        </MenuProvider>
       </body>
     </html>
   )

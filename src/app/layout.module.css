@@ -1,8 +1,11 @@
-/* Layout raíz: body y contenedor principal */
+/* Layout: colores desde variables para homogeneidad */
 .root {
-  /* Estilos específicos del layout (Tailwind cubre la mayoría) */
+  background-color: var(--tms-bg);
+  color: var(--tms-text);
 }
 
 .main {
-  /* Contenedor <main> */
+  min-height: 45vh;
+  background-color: var(--tms-bg);
+  color: var(--tms-text);
 }

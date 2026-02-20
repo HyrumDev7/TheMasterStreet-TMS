@@ -1,9 +1,88 @@
-/* Header y navegación */
+/* Header: flexible y uniforme en móvil y escritorio, iconos siempre ordenados */
 .root {
+  width: 100%;
+  min-height: 3.5rem;
 }
 
 .nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 100%;
+  min-height: 3.5rem;
+  padding: clamp(0.75rem, 2.5vw, 1.25rem) clamp(1.25rem, 5vw, 2.5rem);
+  box-sizing: border-box;
+  flex-wrap: nowrap;
 }
 
-.menu {
+.navInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 100%;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+}
+
+.navLeft {
+  flex-shrink: 0;
+  min-width: 2.75rem;
+}
+
+.navRight {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: clamp(0.5rem, 2vw, 1rem);
+  min-width: 0;
+}
+
+.menuButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border: none;
+  background-color: rgba(30, 30, 35, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #fff;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.menuButton:hover {
+  background-color: rgba(50, 50, 58, 0.6);
+  color: #e5e7eb;
+}
+
+.loginButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem clamp(0.875rem, 3vw, 1.25rem);
+  min-height: 2.75rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  background-color: var(--tms-accent);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: clamp(0.75rem, 2vw, 0.875rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--tms-text);
+  transition: background-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.35);
+}
+
+.loginButton:hover {
+  background-color: #b91c1c;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
 }

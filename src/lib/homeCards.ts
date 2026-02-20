@@ -1,0 +1,42 @@
+export const HOME_CARDS = [
+  {
+    id: 'card-eventos',
+    imgExt: 'png',
+    href: '/eventos',
+    title: 'PRÓXIMOS EVENTOS',
+    tags: ['BATALLAS', 'CYPHERS', 'WORKSHOPS'],
+    icon: 'CalendarDays',
+  },
+  {
+    id: 'card-calendario',
+    imgExt: 'png',
+    href: '/eventos',
+    title: 'CALENDARIO',
+    tags: ['AÑO', 'MES', 'SEMANA'],
+    icon: 'Calendar',
+  },
+  {
+    id: 'card-noticias',
+    imgExt: 'png',
+    href: '/noticias',
+    title: 'NOTICIAS',
+    tags: ['ENTRADAS', 'FREESTYLE', 'CULTURA'],
+    icon: 'Newspaper',
+  },
+  {
+    id: 'card-shop',
+    imgExt: 'png',
+    href: '/shop',
+    title: 'SHOP',
+    tags: ['ROPA', 'ENTRADAS'],
+    icon: 'ShoppingBag',
+  },
+  {
+    id: 'card-historia',
+    imgExt: 'png',
+    href: '/nosotros',
+    title: 'NUESTRA HISTORIA',
+    tags: ['INICIOS', 'MOMENTOS', 'EL EQUIPO', 'SÉ TMS'],
+    icon: 'BookOpen',
+  },
+] as const

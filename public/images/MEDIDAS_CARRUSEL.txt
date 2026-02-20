@@ -1,0 +1,32 @@
+CARRUSEL – MEDIDA ESTÁNDAR (proyecto TMS)
+=========================================
+
+Las 3 imágenes del carrusel comparten UNA SOLA medida estándar para que
+el ecosistema (Next.js, CSS, optimización de imágenes) funcione correctamente.
+
+MEDIDA ESTÁNDAR DE CADA IMAGEN (las 3 iguales)
+----------------------------------------------
+  Ancho:  1920 px
+  Alto:    540 px
+
+  Proporción: 32 : 9 (coincide con --tms-carousel-aspect en el CSS).
+
+NOMBRES DE ARCHIVO
+------------------
+  carrusel-1.jpg
+  carrusel-2.jpg
+  carrusel-3.jpg
+
+  Ubicación: /public/images/
+
+FORMATO
+-------
+  JPG (recomendado) o PNG. Next.js optimiza y puede servir WebP en navegadores compatibles.
+
+REFERENCIA EN CÓDIGO
+--------------------
+  Constantes: src/lib/carousel.ts
+    CAROUSEL_IMAGE_WIDTH  = 1920
+    CAROUSEL_IMAGE_HEIGHT = 540
+
+  No cambiar la proporción sin actualizar globals.css (--tms-carousel-aspect) y lib/carousel.ts.
