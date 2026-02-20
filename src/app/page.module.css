@@ -51,10 +51,9 @@
   min-height: 100vh;
 }
 
-/* Logo-tms y frase: bloque subido con -10rem; menú e Iniciar sesión quedan en el header sin tocar */
+/* Logo-tms y frase: misma posición relativa en móvil y escritorio (responsivo) */
 .heroContent {
   position: absolute;
-  top: -10rem;
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -69,13 +68,27 @@
   flex-direction: column;
   align-items: center;
   gap: 0;
+  /* Móvil: bloque subido para que se vea espectacular como en escritorio */
+  top: -4rem;
+}
+
+@media (min-width: 768px) {
+  .heroContent {
+    top: -7rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .heroContent {
+    top: -10rem;
+  }
 }
 
 .heroContent a {
   pointer-events: auto;
 }
 
-/* Logo-tms + frase en el mismo bloque para que queden pegados */
+/* Logo-tms + frase: mismo bloque en móvil y escritorio, pegados */
 .logoWrap {
   position: relative;
   margin: 0;
@@ -84,6 +97,12 @@
   align-items: center;
   width: min(94vw, 920px);
   padding: 0 0.25rem;
+  gap: 0;
+}
+
+.logoWrap a {
+  display: block;
+  line-height: 0;
 }
 
 @media (min-width: 640px) {
@@ -111,22 +130,40 @@
   object-fit: contain;
   object-position: center;
   vertical-align: top;
+  /* Móvil: logo grande pero caben logo + frase en vista */
+  max-height: 52vh;
   /* Sombra marcada para que el logo lea bien encima del rapero y la multitud */
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5)) drop-shadow(0 10px 25px rgba(0, 0, 0, 0.45))
     drop-shadow(0 0 40px rgba(0, 0, 0, 0.25));
 }
 
-/* Frase pegada al logo: mismo bloque, separación mínima */
+@media (min-width: 768px) {
+  .logoImage {
+    max-height: none;
+  }
+}
+
+/* Frase subida y pegada al logo, letra más grande */
 .slogan {
+  position: relative;
+  top: -10rem;
   display: block;
-  margin: 0.2rem 0 0;
+  margin: 0;
   padding: 0;
-  font-size: clamp(0.8125rem, 2vw, 1rem);
+  font-size: clamp(0.9375rem, 2.8vw, 1.25rem);
   font-weight: 500;
   line-height: 1.25;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--tms-text);
+}
+
+/* Móvil: misma frase impactante, tamaño mínimo que se lea bien */
+@media (max-width: 767px) {
+  .slogan {
+    font-size: clamp(1rem, 4vw, 1.2rem);
+    letter-spacing: 0.08em;
+  }
 }
 
 .cardsSection {
