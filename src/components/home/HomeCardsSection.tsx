@@ -80,6 +80,47 @@ export function HomeCardsSection() {
                 </div>
               )
             }
+            const isHistoria = card.id === 'card-historia'
+            if (isHistoria) {
+              return (
+                <div key={card.id} className={styles.card}>
+                  <Link href={card.href} className={styles.cardImageLink} aria-label={card.title}>
+                    {imageEl}
+                  </Link>
+                  <div className={styles.cardBody}>
+                    <Link
+                      href={card.href}
+                      className={`${styles.cardTitleBtn} ${CARD_TITLE_CLASS[card.id] ?? ''}`}
+                    >
+                      {titleEl}
+                    </Link>
+                    <div className={styles.cardTags}>
+                      {card.tags.map((tag, i) => {
+                        const isSerTms = tag === 'SÉ TMS'
+                        const className =
+                          i === 0 ? styles.cardTagLarge : styles.cardTagSmall
+                        if (isSerTms) {
+                          return (
+                            <Link
+                              key={tag}
+                              href="/ser-tms"
+                              className={className}
+                            >
+                              {tag}
+                            </Link>
+                          )
+                        }
+                        return (
+                          <span key={tag} className={className}>
+                            {tag}
+                          </span>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )
+            }
             return (
               <Link key={card.id} href={card.href} className={styles.card}>
                 {imageEl}

@@ -47,6 +47,37 @@ export type Database = {
           updated_at?: string
         }
       }
+      ser_tms_postulaciones: {
+        Row: {
+          id?: number
+          nombre: string
+          apellidos: string
+          rut: string
+          aka: string
+          ciudad_comuna: string
+          edad: number
+          link_video: string
+          created_at?: string
+        }
+        Insert: {
+          nombre: string
+          apellidos: string
+          rut: string
+          aka: string
+          ciudad_comuna: string
+          edad: number
+          link_video: string
+        }
+        Update: {
+          nombre?: string
+          apellidos?: string
+          rut?: string
+          aka?: string
+          ciudad_comuna?: string
+          edad?: number
+          link_video?: string
+        }
+      }
       [_ in never]: never
     }
     Views: {
