@@ -1,4 +1,4 @@
-/* Carrusel: mismo ancho que la pantalla (100vw), alineado al fondo */
+/* Carrusel: ancho limitado a 1920px para no ampliar por encima de la resolución de las imágenes */
 .section {
   position: relative;
   z-index: 2;
@@ -7,14 +7,20 @@
   margin-top: 5rem;
   padding-top: 0;
   padding-bottom: var(--tms-section-py, 2.5rem);
-  background: transparent;
+  background: var(--tms-bg);
   overflow: hidden;
+  box-sizing: border-box;
+}
+
+.carouselWrapper {
+  max-width: 1920px;
+  margin: 0 auto;
+  width: 100%;
   box-sizing: border-box;
 }
 
 .carouselContainer {
   width: 100%;
-  max-width: none;
   margin: 0;
   padding: 0;
   box-sizing: border-box;

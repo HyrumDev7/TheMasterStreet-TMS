@@ -13,9 +13,9 @@ const CAROUSEL_IMAGES = CAROUSEL_IMAGE_FILES.map((file) => ({
   alt: 'The Master Street',
 }))
 
-/** sizes: hasta 3840px para pantallas grandes y Retina; evita pixelación en 2x/4K */
+/** sizes: carrusel nunca supera 1920px de ancho → nunca ampliamos por encima de la resolución nativa */
 const IMAGE_SIZES =
-  '(max-width: 640px) 100vw, (max-width: 1024px) 100vw, (max-width: 1280px) 1280px, (max-width: 1920px) 1920px, 3840px'
+  '(max-width: 640px) 100vw, (max-width: 1024px) 100vw, (max-width: 1280px) 1280px, 1920px'
 
 export function HeroCarousel() {
   const [index, setIndex] = useState(0)
@@ -29,7 +29,8 @@ export function HeroCarousel() {
 
   return (
     <section className={styles.section} aria-label="Carrusel de imágenes">
-      <div className={styles.carouselContainer}>
+      <div className={styles.carouselWrapper}>
+        <div className={styles.carouselContainer}>
         <div className={styles.track} style={{ transform: `translateX(-${index * 100}%)` }}>
           {CAROUSEL_IMAGES.map((img, i) => (
             <div key={img.src} className={styles.slide}>
@@ -59,6 +60,7 @@ export function HeroCarousel() {
             onClick={() => setIndex(i)}
           />
         ))}
+        </div>
         </div>
       </div>
     </section>
