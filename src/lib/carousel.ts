@@ -13,11 +13,11 @@ export const CAROUSEL_IMAGE_HEIGHT = 540
 /** Proporción del carrusel (ancho : alto) */
 export const CAROUSEL_ASPECT_RATIO = 32 / 9
 
-/** Nombres de archivo en /public/images/ */
+/** Nombres de archivo en /public/images/ (JPG o PNG) */
 export const CAROUSEL_IMAGE_FILES = [
-  'carrusel-1.jpg',
-  'carrusel-2.jpg',
-  'carrusel-3.jpg',
+  'carrusel-1.png',
+  'carrusel-2.png',
+  'carrusel-3.png',
 ] as const
 
 /** Duración de cada slide en segundos */

@@ -1,0 +1,50 @@
+.main {
+  min-height: 100vh;
+  padding: 2.5rem 1rem;
+  background: var(--tms-bg, #09090b);
+}
+
+.container {
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
+.comingSoon {
+  margin: 0 0 2rem 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--tms-accent);
+  text-align: center;
+}
+
+.section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--tms-card-bg, #374151);
+  border-radius: var(--tms-radius, 12px);
+}
+
+.heading {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.description {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: #d1d5db;
+  line-height: 1.5;
+}
+
+.back {
+  display: inline-block;
+  font-size: 0.875rem;
+  color: #9ca3af;
+  text-decoration: none;
+}
+
+.back:hover {
+  color: #fff;
+}

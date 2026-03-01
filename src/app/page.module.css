@@ -4,15 +4,16 @@
   color: var(--tms-text);
 }
 
-/* Wrapper Hero + Cards: imagen completa. overflow visible para que logo y frase no se recorten */
+/* Wrapper Hero + Cards: imagen de fondo intocable (100vh, sin recortes) */
 .heroAndCardsWrap {
   position: relative;
   overflow-x: hidden;
-  overflow-y: visible;
+  overflow-y: visible; /* no recortar fondo ni logo/frase */
   min-height: 100vh;
   margin-top: calc(-1 * env(safe-area-inset-top, 0px));
 }
 
+/* Imagen de fondo: no modificar (siempre completa, centrada, sin recorte) */
 .heroBg {
   position: absolute;
   inset: 0;
@@ -44,14 +45,14 @@
   }
 }
 
-/* Hero: imagen completa. Logo en la división superior, por encima de la línea de la imagen */
+/* Hero: solo define altura del bloque; el fondo sigue en .heroBg (intocable) */
 .hero {
   position: relative;
   z-index: 2;
-  min-height: 100vh;
+  min-height: 38vh;
 }
 
-/* Logo-tms y frase: misma posición relativa en móvil y escritorio (responsivo) */
+/* Logo-tms y frase: subidos con top negativo; la imagen de fondo no se modifica */
 .heroContent {
   position: absolute;
   left: 0;
@@ -68,19 +69,19 @@
   flex-direction: column;
   align-items: center;
   gap: 0;
-  /* Móvil: bloque subido para que se vea espectacular como en escritorio */
-  top: -4rem;
+  /* Logo y frase un punto más arriba */
+  top: 0.25rem;
 }
 
 @media (min-width: 768px) {
   .heroContent {
-    top: -7rem;
+    top: -2.5rem;
   }
 }
 
 @media (min-width: 1024px) {
   .heroContent {
-    top: -10rem;
+    top: -5.25rem;
   }
 }
 
@@ -88,14 +89,14 @@
   pointer-events: auto;
 }
 
-/* Logo-tms + frase: mismo bloque en móvil y escritorio, pegados */
+/* Logo-tms + frase: tamaño reducido, bloque en móvil y escritorio */
 .logoWrap {
   position: relative;
   margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: min(94vw, 920px);
+  width: min(70vw, 580px);
   padding: 0 0.25rem;
   gap: 0;
 }
@@ -107,19 +108,19 @@
 
 @media (min-width: 640px) {
   .logoWrap {
-    width: min(88vw, 860px);
+    width: min(62vw, 560px);
   }
 }
 
 @media (min-width: 768px) {
   .logoWrap {
-    width: min(82vw, 820px);
+    width: min(54vw, 520px);
   }
 }
 
 @media (min-width: 1024px) {
   .logoWrap {
-    width: min(78vw, 800px);
+    width: min(48vw, 480px);
   }
 }
 
@@ -130,8 +131,7 @@
   object-fit: contain;
   object-position: center;
   vertical-align: top;
-  /* Móvil: logo grande pero caben logo + frase en vista */
-  max-height: 52vh;
+  max-height: 38vh;
   /* Sombra marcada para que el logo lea bien encima del rapero y la multitud */
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5)) drop-shadow(0 10px 25px rgba(0, 0, 0, 0.45))
     drop-shadow(0 0 40px rgba(0, 0, 0, 0.25));
@@ -139,14 +139,14 @@
 
 @media (min-width: 768px) {
   .logoImage {
-    max-height: none;
+    max-height: 36vh;
   }
 }
 
-/* Frase subida y pegada al logo, letra más grande */
+/* Frase pegada al logo */
 .slogan {
   position: relative;
-  top: -10rem;
+  top: -6rem;
   display: block;
   margin: 0;
   padding: 0;

@@ -19,7 +19,7 @@ export default async function PerfilPage() {
   } = await supabase.auth.getUser()
 
   if (!user) {
-    redirect('/auth/login?redirect=/perfil')
+    redirect('/')
   }
 
   // Obtener perfil del usuario

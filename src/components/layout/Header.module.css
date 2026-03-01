@@ -62,7 +62,7 @@
   color: #e5e7eb;
 }
 
-.loginButton {
+.juradoButton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -80,9 +80,82 @@
   color: var(--tms-text);
   transition: background-color 0.2s, box-shadow 0.2s;
   box-shadow: 0 2px 6px rgba(220, 38, 38, 0.35);
+  cursor: pointer;
 }
 
-.loginButton:hover {
+.juradoButton:hover {
   background-color: #b91c1c;
   box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+}
+
+/* Modal jurado */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.modalContent {
+  position: relative;
+  background-color: #1f2937;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 22rem;
+  width: 100%;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.modalClose {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 0;
+}
+
+.modalClose:hover {
+  color: #fff;
+}
+
+.modalTitle {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #fff;
+  padding-right: 2rem;
+}
+
+.modalOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.modalOption {
+  display: block;
+  width: 100%;
+  padding: 0.875rem 1rem;
+  text-align: center;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #fff;
+  background-color: var(--tms-accent);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.modalOption:hover {
+  background-color: #b91c1c;
 }

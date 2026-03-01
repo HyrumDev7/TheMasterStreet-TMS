@@ -1,8 +1,11 @@
-/* Misma escala de espaciado que cards (homogéneo móvil/escritorio) */
+/* Carrusel a ancho completo de la pantalla (edge to edge) */
 .section {
   position: relative;
   z-index: 2;
-  padding-top: var(--tms-section-py, 2.5rem);
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-top: 5rem;
+  padding-top: 0;
   padding-bottom: var(--tms-section-py, 2.5rem);
   background: transparent;
   overflow: hidden;
@@ -10,11 +13,9 @@
 
 .carouselContainer {
   width: 100%;
-  max-width: 80rem;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: var(--tms-edge-margin, 1rem);
-  padding-right: var(--tms-edge-margin, 1rem);
+  max-width: none;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -28,6 +29,7 @@
   position: relative;
   flex: 0 0 100%;
   width: 100%;
+  min-width: 0;
   aspect-ratio: var(--tms-carousel-aspect, 32 / 9);
   min-height: 200px;
 }
@@ -54,6 +56,9 @@
   justify-content: center;
   gap: 0.5rem;
   margin-top: 1rem;
+  padding-left: var(--tms-edge-margin, 1rem);
+  padding-right: var(--tms-edge-margin, 1rem);
+  box-sizing: border-box;
 }
 
 .dot {
