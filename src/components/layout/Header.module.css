@@ -88,12 +88,14 @@
   box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
 }
 
-/* Modal jurado */
+/* Modal jurado: overlay sobre la primera pantalla (Hero + carrusel visibles detrás) */
 .modalOverlay {
   position: fixed;
   inset: 0;
   z-index: 100;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -103,12 +105,13 @@
 
 .modalContent {
   position: relative;
-  background-color: #1f2937;
+  background-color: rgba(31, 41, 55, 0.95);
   border-radius: 12px;
   padding: 2rem;
   max-width: 22rem;
   width: 100%;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .modalClose {

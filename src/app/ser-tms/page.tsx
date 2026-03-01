@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { serTmsSchema, type SerTmsInput } from '@/lib/validations/serTms'
@@ -171,6 +172,11 @@ export default function SerTmsPage() {
               </button>
             </form>
           )}
+          <p className={styles.backWrap}>
+            <Link href="/" className={styles.backLink}>
+              Volver a inicio
+            </Link>
+          </p>
         </div>
       </div>
     </div>

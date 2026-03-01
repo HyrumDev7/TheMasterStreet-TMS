@@ -13,13 +13,14 @@
   margin-top: calc(-1 * env(safe-area-inset-top, 0px));
 }
 
-/* Imagen de fondo: no modificar (siempre completa, centrada, sin recorte) */
+/* Imagen de fondo: se ve completa (contain), sin recortes */
 .heroBg {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
+  background-size: contain;
+  background-position: center top;
   background-repeat: no-repeat;
+  background-color: var(--tms-bg);
   min-height: 100vh;
 }
 
