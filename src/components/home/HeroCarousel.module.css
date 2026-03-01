@@ -50,6 +50,8 @@
 .image {
   object-fit: cover;
   object-position: center;
+  /* Renderizado más nítido al escalar en Chrome/Safari (móvil y escritorio) */
+  image-rendering: -webkit-optimize-contrast;
 }
 
 .dots {

@@ -39,7 +39,7 @@ export function HeroCarousel() {
                 fill
                 className={styles.image}
                 sizes={IMAGE_SIZES}
-                quality={90}
+                quality={95}
                 priority={i === 0}
                 loading={i === 0 ? undefined : 'lazy'}
               />
