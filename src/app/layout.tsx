@@ -4,6 +4,7 @@ import '@/styles/globals.css'
 import { MenuProvider } from '@/contexts/MenuContext'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
+import { CookieConsent } from '@/components/layout/CookieConsent'
 import styles from './layout.module.css'
 import { APP_URL } from '@/lib/utils/constants'
 
@@ -52,6 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Header />
           <main className={styles.main}>{children}</main>
           <Footer />
+          <CookieConsent />
         </MenuProvider>
       </body>
     </html>
