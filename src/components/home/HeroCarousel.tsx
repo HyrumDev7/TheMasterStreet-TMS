@@ -13,9 +13,9 @@ const CAROUSEL_IMAGES = CAROUSEL_IMAGE_FILES.map((file) => ({
   alt: 'The Master Street',
 }))
 
-/** sizes: estándar 1920px de ancho; viewport menor pide menos ancho (optimización Next.js) */
+/** sizes: hasta 3840px para pantallas grandes y Retina; evita pixelación en 2x/4K */
 const IMAGE_SIZES =
-  '(max-width: 640px) 100vw, (max-width: 1024px) 100vw, (max-width: 1280px) 1280px, 1920px'
+  '(max-width: 640px) 100vw, (max-width: 1024px) 100vw, (max-width: 1280px) 1280px, (max-width: 1920px) 1920px, 3840px'
 
 export function HeroCarousel() {
   const [index, setIndex] = useState(0)
@@ -39,6 +39,7 @@ export function HeroCarousel() {
                 fill
                 className={styles.image}
                 sizes={IMAGE_SIZES}
+                quality={90}
                 priority={i === 0}
                 loading={i === 0 ? undefined : 'lazy'}
               />
