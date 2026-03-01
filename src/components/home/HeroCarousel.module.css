@@ -1,4 +1,4 @@
-/* Carrusel a ancho completo de la pantalla (edge to edge) */
+/* Carrusel: mismo ancho que la pantalla (100vw), alineado al fondo */
 .section {
   position: relative;
   z-index: 2;
@@ -9,6 +9,7 @@
   padding-bottom: var(--tms-section-py, 2.5rem);
   background: transparent;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .carouselContainer {
@@ -68,14 +69,16 @@
   border: none;
   background-color: rgba(255, 255, 255, 0.4);
   cursor: pointer;
-  transition: background-color 0.2s, transform 0.2s;
+  transition:
+    background-color 0.2s,
+    transform 0.2s;
 }
 
 .dot:hover {
   background-color: rgba(255, 255, 255, 0.7);
 }
 
-.dot[data-active="true"] {
+.dot[data-active='true'] {
   background-color: #fff;
   transform: scale(1.25);
 }

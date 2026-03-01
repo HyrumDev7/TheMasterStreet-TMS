@@ -4,21 +4,24 @@
   color: var(--tms-text);
 }
 
-/* Wrapper Hero + Cards: imagen de fondo intocable (100vh, sin recortes) */
+/* Wrapper Hero + Cards: ocupa toda la pantalla (100vw × 100vh) */
 .heroAndCardsWrap {
   position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
   overflow-x: hidden;
-  overflow-y: visible; /* no recortar fondo ni logo/frase */
+  overflow-y: visible;
   min-height: 100vh;
   margin-top: calc(-1 * env(safe-area-inset-top, 0px));
+  box-sizing: border-box;
 }
 
-/* Imagen de fondo: se ve completa (contain), sin recortes */
+/* Imagen de fondo: usa toda la pantalla (cover) */
 .heroBg {
   position: absolute;
   inset: 0;
-  background-size: contain;
-  background-position: center top;
+  background-size: cover;
+  background-position: center center;
   background-repeat: no-repeat;
   background-color: var(--tms-bg);
   min-height: 100vh;
@@ -159,9 +162,10 @@
   color: var(--tms-text);
 }
 
-/* Móvil: misma frase impactante, tamaño mínimo que se lea bien */
+/* Móvil: frase dos puntos más abajo para que no se monte sobre el logo */
 @media (max-width: 767px) {
   .slogan {
+    top: -4rem;
     font-size: clamp(1rem, 4vw, 1.2rem);
     letter-spacing: 0.08em;
   }
@@ -261,7 +265,12 @@
   padding: 1.25rem 1.5rem;
   gap: 0.75rem;
   background-color: var(--tms-card-bg);
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
 }
 
 @media (min-width: 640px) {
