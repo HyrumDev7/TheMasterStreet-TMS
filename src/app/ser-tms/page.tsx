@@ -1,17 +1,19 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { serTmsSchema, type SerTmsInput } from '@/lib/validations/serTms'
 import { formatearRut } from '@/lib/validations/rut'
+import { ALLOWED_COMPROBANTE_FORMATS, MAX_COMPROBANTE_SIZE_MB } from '@/lib/utils/constants'
 import styles from './page.module.css'
 
 export default function SerTmsPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
+  const comprobanteRef = useRef<HTMLInputElement>(null)
 
   const {
     register,
@@ -33,14 +35,38 @@ export default function SerTmsPage() {
   }
 
   const onSubmit = async (data: SerTmsInput) => {
+    const file = comprobanteRef.current?.files?.[0]
+    if (!file || file.size === 0) {
+      setError('Debes subir el comprobante de pago de tu inscripción.')
+      return
+    }
+    const ext = file.name.split('.').pop()?.toLowerCase()
+    if (!ext || !ALLOWED_COMPROBANTE_FORMATS.includes(ext)) {
+      setError(`Formato no permitido. Permitidos: ${ALLOWED_COMPROBANTE_FORMATS.join(', ')}`)
+      return
+    }
+    if (file.size > MAX_COMPROBANTE_SIZE_MB * 1024 * 1024) {
+      setError(`El comprobante no puede pesar más de ${MAX_COMPROBANTE_SIZE_MB}MB`)
+      return
+    }
+
     setLoading(true)
     setError('')
     setSuccess(false)
     try {
+      const formData = new FormData()
+      formData.set('nombre', data.nombre)
+      formData.set('apellidos', data.apellidos)
+      formData.set('rut', data.rut)
+      formData.set('aka', data.aka)
+      formData.set('ciudadComuna', data.ciudadComuna)
+      formData.set('edad', String(data.edad))
+      formData.set('linkVideo', data.linkVideo)
+      formData.set('comprobante', file)
+
       const res = await fetch('/api/ser-tms', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: formData,
       })
       const result = await res.json()
       if (!res.ok) {
@@ -67,8 +93,7 @@ export default function SerTmsPage() {
         <div className={styles.formCard}>
           <h1 className={styles.title}>Sé TMS</h1>
           <p className={styles.subtitle}>
-            Completa el formulario con tu información y enlace de video (YouTube, TikTok o
-            Instagram).
+            Todos los campos son obligatorios. Solo una inscripción por persona.
           </p>
           {success ? (
             <p className={styles.alertSuccess}>
@@ -83,6 +108,7 @@ export default function SerTmsPage() {
                   id="nombre"
                   type="text"
                   placeholder="Tu nombre"
+                  required
                   {...register('nombre')}
                 />
                 {errors.nombre && (
@@ -95,6 +121,7 @@ export default function SerTmsPage() {
                   id="apellidos"
                   type="text"
                   placeholder="Tus apellidos"
+                  required
                   {...register('apellidos')}
                 />
                 {errors.apellidos && (
@@ -107,6 +134,7 @@ export default function SerTmsPage() {
                   id="rut"
                   type="text"
                   placeholder="12.345.678-9"
+                  required
                   {...register('rut')}
                 />
                 {errors.rut && (
@@ -119,6 +147,7 @@ export default function SerTmsPage() {
                   id="aka"
                   type="text"
                   placeholder="Tu nombre artístico"
+                  required
                   {...register('aka')}
                 />
                 {errors.aka && (
@@ -131,6 +160,7 @@ export default function SerTmsPage() {
                   id="ciudadComuna"
                   type="text"
                   placeholder="Ej: Santiago, Concepción"
+                  required
                   {...register('ciudadComuna')}
                 />
                 {errors.ciudadComuna && (
@@ -145,6 +175,7 @@ export default function SerTmsPage() {
                   min={1}
                   max={120}
                   placeholder="Ej: 25"
+                  required
                   {...register('edad', { valueAsNumber: true })}
                 />
                 {errors.edad && (
@@ -157,11 +188,26 @@ export default function SerTmsPage() {
                   id="linkVideo"
                   type="url"
                   placeholder="https://..."
+                  required
                   {...register('linkVideo')}
                 />
                 {errors.linkVideo && (
                   <p className={styles.error}>{errors.linkVideo.message}</p>
                 )}
+              </div>
+              <div>
+                <label htmlFor="comprobante">Comprobante de pago de la inscripción</label>
+                <input
+                  ref={comprobanteRef}
+                  id="comprobante"
+                  type="file"
+                  accept={ALLOWED_COMPROBANTE_FORMATS.map((f) => `.${f}`).join(',')}
+                  required
+                  aria-describedby="comprobante-hint"
+                />
+                <p id="comprobante-hint" className={styles.hint}>
+                  PDF, JPG, PNG o WebP. Máximo {MAX_COMPROBANTE_SIZE_MB}MB.
+                </p>
               </div>
               <button
                 type="submit"

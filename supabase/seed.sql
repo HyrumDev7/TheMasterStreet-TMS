@@ -1,0 +1,2 @@
+-- Seed opcional para Supabase local (dejar vacío o añadir datos de prueba).
+-- Se ejecuta después de las migraciones en `supabase db reset`.
