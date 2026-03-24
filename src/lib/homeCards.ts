@@ -36,7 +36,7 @@ export const HOME_CARDS = [
     imgExt: 'png',
     href: '/nosotros',
     title: 'NUESTRA HISTORIA',
-    tags: ['INICIOS', 'MOMENTOS', 'EL EQUIPO', 'SÉ TMS'],
+    tags: ['INICIOS', 'MOMENTOS', 'EL EQUIPO', 'SÉ TMS', 'FORMULARIO DE INSCRIPCIÓN'],
     icon: 'BookOpen',
   },
 ] as const

@@ -78,7 +78,30 @@ export type Database = {
           link_video?: string
         }
       }
-      [_ in never]: never
+      inscripciones_organizacion: {
+        Row: {
+          id: number
+          nombre_organizacion: string
+          integrantes: string
+          jurado_oficial: string
+          link_red_social: string
+          created_at?: string
+        }
+        Insert: {
+          nombre_organizacion: string
+          integrantes: string
+          jurado_oficial: string
+          link_red_social: string
+          created_at?: string
+        }
+        Update: {
+          nombre_organizacion?: string
+          integrantes?: string
+          jurado_oficial?: string
+          link_red_social?: string
+          created_at?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never

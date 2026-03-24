@@ -19,6 +19,8 @@ Documentación unificada del proyecto. Cada sección indica su **fuente** (archi
 11. [Solución 404 NOT_FOUND](#11-solución-404-not_found) — *SOLUCION_NOT_FOUND*
 12. [Guía de aprendizaje](#12-guía-de-aprendizaje) — *GUIA_APRENDIZAJE*
 13. [Fase 2 completada (APIs)](#13-fase-2-completada-apis) — *FASE2_COMPLETADA*
+14. [Sueldo](#14-sueldo) — Referencia mercado Chile (ingeniero, CTO, cobro por proyecto)
+15. [Tests automatizados](#15-tests-automatizados) — *tests/README.md*
 
 ---
 
@@ -203,6 +205,39 @@ Guía larga para ingenieros: configuración inicial, Next.js 14 y App Router, Ty
 **Fuente:** `FASE2_COMPLETADA.md`
 
 Resumen de APIs: Auth (register, login, logout), Eventos (CRUD, listado, filtros), Convocatorias (listado, detalle, aplicar con video), Aplicaciones (del usuario), Pagos Flow (init, confirm), Upload (video, imagen). Utilidades: Flow integration, generador QR. Seguridad: auth, roles, Zod, sanitización. TODOs: emails transaccionales, rate limiting, caché, testing.
+
+---
+
+## 14. Sueldo
+
+Referencia para el mercado chileno: salario como **Ingeniero de Software**, como **CTO / encargado de área informática** del proyecto, y **cobro por esta página web** como proyecto único (freelance o encargo).
+
+| Rol / concepto | Rango mensual (CLP) |
+|----------------|----------------------|
+| **Ingeniero de Software** | $1.800.000 – $2.500.000 |
+| **CTO / encargado área informática** (proyecto tipo TMS) | $2.000.000 – $3.000.000 |
+| **Cobro solo por esta página web** (proyecto cerrado) | $2.500.000 – $6.000.000 |
+| **Incl. despliegue + soporte 1–3 meses** | $4.000.000 – $8.000.000 |
+
+*Fuentes: promedios y rangos reportados en Chile (2024–2025). Los montos dependen de experiencia, empresa y forma de contratación.*
+
+### Enlaces de referencia (Chile)
+
+- **[Salarios Ingeniero de Software en Chile](https://cl.talent.com/salary?job=ingeniero+software)** — Talent.com: rangos por experiencia y ubicación.
+- **[Salarios CTO en Chile](https://talentup.io/salary/chief%20technology%20officer/c-chile)** — TalentUp: compensación CTO / Chief Technology Officer.
+
+---
+
+## 15. Tests automatizados
+
+**Fuente:** `tests/README.md`
+
+- **Unitarios (Vitest):** validaciones RUT, Zod (Sé TMS, formulario organización), componente UI de ejemplo.
+- **Integración (Vitest):** `POST /api/ser-tms` y `POST /api/formulario-inscripcion` con **mocks de Supabase** (datos aleatorios; sin persistencia en BD).
+- **E2E (Playwright):** navegación home, `/ser-tms`, `/formulario-inscripcion`, `/eventos`.
+- **Limpieza:** `afterEach` limpia mocks; para filas reales con prefijo `TEST_TMS_`, `npm run test:cleanup-db` (requiere `SUPABASE_SERVICE_ROLE_KEY`).
+
+Comandos: `npm run test`, `npm run test:e2e`, `npm run test:all`, `npm run test:cleanup-db`. Primera vez E2E: `npx playwright install chromium`.
 
 ---
 

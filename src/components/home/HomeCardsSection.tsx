@@ -28,6 +28,12 @@ const CARD_TITLE_CLASS: Record<string, string> = {
   'card-historia': styles.cardTitleBtnHistoria,
 }
 
+/** Etiquetas de Nuestra Historia que enlazan a una página (no son solo texto) */
+const HISTORIA_TAG_LINKS: Record<string, string> = {
+  'SÉ TMS': '/ser-tms',
+  'FORMULARIO DE INSCRIPCIÓN': '/formulario-inscripcion',
+}
+
 export function HomeCardsSection() {
   return (
     <section className={styles.cardsSection}>
@@ -96,16 +102,12 @@ export function HomeCardsSection() {
                     </Link>
                     <div className={styles.cardTags}>
                       {card.tags.map((tag, i) => {
-                        const isSerTms = tag === 'SÉ TMS'
+                        const href = HISTORIA_TAG_LINKS[tag]
                         const className =
                           i === 0 ? styles.cardTagLarge : styles.cardTagSmall
-                        if (isSerTms) {
+                        if (href) {
                           return (
-                            <Link
-                              key={tag}
-                              href="/ser-tms"
-                              className={className}
-                            >
+                            <Link key={tag} href={href} className={className}>
                               {tag}
                             </Link>
                           )
