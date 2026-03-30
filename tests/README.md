@@ -32,7 +32,7 @@ npm run test:cleanup-db
 
 Requiere `SUPABASE_SERVICE_ROLE_KEY` y `NEXT_PUBLIC_SUPABASE_URL` en `.env.local`.
 
-Los generadores en `tests/helpers/testData.ts` marcan el nombre en Sé TMS con `TEST_TMS_` para poder borrar esas filas de forma segura.
+Los generadores en `tests/helpers/testData.ts` marcan el nombre en SÉ TMS con `TEST_TMS_` para poder borrar esas filas de forma segura.
 
 ## Variables opcionales
 

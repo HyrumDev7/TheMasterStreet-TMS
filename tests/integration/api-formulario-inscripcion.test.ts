@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { POST } from '@/app/api/formulario-inscripcion/route'
-import { createServerClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { randomFormularioOrganizacionBody } from '../helpers/testData'
 
-vi.mock('@/lib/supabase/server', () => ({
-  createServerClient: vi.fn(),
+vi.mock('@/lib/supabase/admin', () => ({
+  createAdminClient: vi.fn(),
 }))
 
 describe('POST /api/formulario-inscripcion', () => {
@@ -13,7 +13,7 @@ describe('POST /api/formulario-inscripcion', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     insertMock.mockImplementation(() => Promise.resolve({ error: null }))
-    vi.mocked(createServerClient).mockReturnValue({
+    vi.mocked(createAdminClient).mockReturnValue({
       from: vi.fn(() => ({
         insert: insertMock,
       })),

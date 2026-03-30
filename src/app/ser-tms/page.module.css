@@ -1,4 +1,4 @@
-/* Página Sé TMS: mismo fondo que la home (logo/imagen de fondo) */
+/* Página SÉ TMS: mismo fondo que la home (logo/imagen de fondo) */
 .root {
   position: relative;
   min-height: 100vh;
@@ -105,6 +105,67 @@
   font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.55);
   margin-top: 0.25rem;
+}
+
+/* Bloque de datos bancarios (estructura tipo instrucciones de pago / ISO-style labels) */
+.bankTransfer {
+  margin: 0;
+  padding: 1rem 0.875rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+.bankTransferTitle {
+  margin: 0 0 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.bankTransferIntro {
+  margin: 0 0 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.bankTransferDl {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.bankTransferRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.125rem;
+}
+
+.bankTransferRow dt {
+  margin: 0;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.bankTransferRow dd {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.95);
+  word-break: break-word;
+}
+
+.bankTransferValue {
+  font-family: ui-monospace, 'Cascadia Code', 'Segoe UI Mono', monospace;
+  font-size: 0.9375rem;
+  letter-spacing: 0.02em;
 }
 
 .submitBtn {

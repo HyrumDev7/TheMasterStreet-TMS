@@ -1,4 +1,4 @@
--- Bucket para documentos (comprobantes de pago Sé TMS, etc.).
+-- Bucket para documentos (comprobantes de pago SÉ TMS, etc.).
 -- En local (Supabase CLI) este bucket se crea al aplicar la migración.
 
 INSERT INTO storage.buckets (id, name, public)

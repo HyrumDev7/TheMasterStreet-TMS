@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createServerClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { serTmsSchema } from '@/lib/validations/serTms'
 import { limpiarRut } from '@/lib/validations/rut'
 import {
@@ -11,7 +11,7 @@ import {
 
 /**
  * POST /api/ser-tms
- * Recibe el formulario "Sé TMS" (nombre, apellidos, rut, aka, ciudad/comuna, edad, link de video, comprobante de pago).
+ * Recibe el formulario "SÉ TMS" (nombre, apellidos, rut, aka, ciudad/comuna, edad, link de video, comprobante de pago).
  * Comprobante obligatorio; RUT irrepetible (una sola inscripción por RUT).
  */
 export async function POST(request: Request) {
@@ -64,7 +64,7 @@ export async function POST(request: Request) {
       )
     }
 
-    const supabase = createServerClient()
+    const supabase = createAdminClient()
     const rutNormalizado = limpiarRut(data.rut)
 
     const { data: existente } = await supabase

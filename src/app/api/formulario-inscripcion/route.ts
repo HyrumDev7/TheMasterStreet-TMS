@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createServerClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { formularioInscripcionOrganizacionSchema } from '@/lib/validations/formularioInscripcionOrganizacion'
 
 /**
@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     const body = await request.json()
     const data = formularioInscripcionOrganizacionSchema.parse(body)
 
-    const supabase = createServerClient()
+    const supabase = createAdminClient()
     const { error } = await supabase.from('inscripciones_organizacion').insert({
       nombre_organizacion: data.nombreOrganizacion,
       integrantes: data.integrantes,

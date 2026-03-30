@@ -1,4 +1,4 @@
--- Formulario Sé TMS: comprobante de pago obligatorio y RUT irrepetible.
+-- Formulario SÉ TMS: comprobante de pago obligatorio y RUT irrepetible.
 -- Aplicable en Supabase local (supabase db reset / supabase start) o remoto (supabase db push).
 
 -- Tabla nueva (si no existe)

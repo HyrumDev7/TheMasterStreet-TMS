@@ -1,4 +1,4 @@
--- Referencia: esquema de la tabla "Sé TMS" (comprobante obligatorio, RUT irrepetible).
+-- Referencia: esquema de la tabla "SÉ TMS" (comprobante obligatorio, RUT irrepetible).
 -- Para aplicar en la nube: usa supabase/actualizar_ser_tms_cloud.sql en el SQL Editor del Dashboard.
 -- Para local: npx supabase db reset (aplica las migraciones de supabase/migrations/).
 

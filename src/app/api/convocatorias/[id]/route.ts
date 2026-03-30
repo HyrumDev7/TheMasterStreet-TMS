@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 /**
  * GET /api/convocatorias/[id]
@@ -35,8 +36,9 @@ export async function GET(
       )
     }
     
-    // Obtener número de aplicaciones recibidas
-    const { count } = await supabase
+    // Conteo sin exponer filas de aplicaciones vía anon (RLS); solo servidor con service role
+    const admin = createAdminClient()
+    const { count } = await admin
       .from('aplicaciones')
       .select('*', { count: 'exact', head: true })
       .eq('convocatoria_id', params.id)

@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { POST } from '@/app/api/ser-tms/route'
-import { createServerClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { createFakeComprobantePdf, randomSerTmsJsonBody } from '../helpers/testData'
 
-vi.mock('@/lib/supabase/server', () => ({
-  createServerClient: vi.fn(),
+vi.mock('@/lib/supabase/admin', () => ({
+  createAdminClient: vi.fn(),
 }))
 
 function buildSerTmsSupabaseMock(opts?: { existenteId?: number }) {
@@ -60,7 +60,7 @@ describe('POST /api/ser-tms', () => {
     fd.set('linkVideo', data.linkVideo)
 
     const { client } = buildSerTmsSupabaseMock()
-    vi.mocked(createServerClient).mockReturnValue(client as never)
+    vi.mocked(createAdminClient).mockReturnValue(client as never)
 
     const res = await POST(
       new Request('http://localhost/api/ser-tms', { method: 'POST', body: fd })
@@ -83,7 +83,7 @@ describe('POST /api/ser-tms', () => {
     fd.set('comprobante', createFakeComprobantePdf())
 
     const { client } = buildSerTmsSupabaseMock({ existenteId: 999 })
-    vi.mocked(createServerClient).mockReturnValue(client as never)
+    vi.mocked(createAdminClient).mockReturnValue(client as never)
 
     const res = await POST(
       new Request('http://localhost/api/ser-tms', { method: 'POST', body: fd })
@@ -104,7 +104,7 @@ describe('POST /api/ser-tms', () => {
     fd.set('comprobante', createFakeComprobantePdf())
 
     const { client, mockInsert, mockUpload } = buildSerTmsSupabaseMock()
-    vi.mocked(createServerClient).mockReturnValue(client as never)
+    vi.mocked(createAdminClient).mockReturnValue(client as never)
 
     const res = await POST(
       new Request('http://localhost/api/ser-tms', { method: 'POST', body: fd })

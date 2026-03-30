@@ -248,7 +248,8 @@ BEGIN
     NEW.updated_at = NOW();
     RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql
+SET search_path = public;
 
 DROP TRIGGER IF EXISTS update_profiles_updated_at ON profiles;
 CREATE TRIGGER update_profiles_updated_at BEFORE UPDATE ON profiles
@@ -300,7 +301,8 @@ BEGIN
     
     RETURN UPPER(digito_verificador) = UPPER(dv_calculado);
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql
+SET search_path = public;
 
 -- ============================================================================
 -- ROW LEVEL SECURITY (RLS)

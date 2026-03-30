@@ -91,7 +91,7 @@ export default function SerTmsPage() {
       <div className={styles.heroBgOverlay} aria-hidden />
       <div className={styles.content}>
         <div className={styles.formCard}>
-          <h1 className={styles.title}>Sé TMS</h1>
+          <h1 className={styles.title}>SÉ TMS</h1>
           <p className={styles.subtitle}>
             Todos los campos son obligatorios. Solo una inscripción por persona.
           </p>
@@ -195,6 +195,43 @@ export default function SerTmsPage() {
                   <p className={styles.error}>{errors.linkVideo.message}</p>
                 )}
               </div>
+              <section
+                className={styles.bankTransfer}
+                aria-labelledby="bank-transfer-heading"
+              >
+                <h2 id="bank-transfer-heading" className={styles.bankTransferTitle}>
+                  Datos para transferencia bancaria
+                </h2>
+                <p className={styles.bankTransferIntro}>
+                  Realiza el pago de tu inscripción a la cuenta corporativa oficial.
+                </p>
+                <dl className={styles.bankTransferDl}>
+                  <div className={styles.bankTransferRow}>
+                    <dt>Beneficiario (nombre del titular)</dt>
+                    <dd>THE MASTER STREET SpA</dd>
+                  </div>
+                  <div className={styles.bankTransferRow}>
+                    <dt>Identificación fiscal — RUT</dt>
+                    <dd>
+                      <span className={styles.bankTransferValue}>78279129-K</span>
+                    </dd>
+                  </div>
+                  <div className={styles.bankTransferRow}>
+                    <dt>Institución financiera</dt>
+                    <dd>Banco de Chile</dd>
+                  </div>
+                  <div className={styles.bankTransferRow}>
+                    <dt>Tipo de cuenta</dt>
+                    <dd>Cuenta Vista</dd>
+                  </div>
+                  <div className={styles.bankTransferRow}>
+                    <dt>Número de cuenta</dt>
+                    <dd>
+                      <span className={styles.bankTransferValue}>171826042</span>
+                    </dd>
+                  </div>
+                </dl>
+              </section>
               <div>
                 <label htmlFor="comprobante">Comprobante de pago de la inscripción</label>
                 <input

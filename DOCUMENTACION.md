@@ -232,7 +232,7 @@ Referencia para el mercado chileno: salario como **Ingeniero de Software**, como
 
 **Fuente:** `tests/README.md`
 
-- **Unitarios (Vitest):** validaciones RUT, Zod (Sé TMS, formulario organización), componente UI de ejemplo.
+- **Unitarios (Vitest):** validaciones RUT, Zod (SÉ TMS, formulario organización), componente UI de ejemplo.
 - **Integración (Vitest):** `POST /api/ser-tms` y `POST /api/formulario-inscripcion` con **mocks de Supabase** (datos aleatorios; sin persistencia en BD).
 - **E2E (Playwright):** navegación home, `/ser-tms`, `/formulario-inscripcion`, `/eventos`.
 - **Limpieza:** `afterEach` limpia mocks; para filas reales con prefijo `TEST_TMS_`, `npm run test:cleanup-db` (requiere `SUPABASE_SERVICE_ROLE_KEY`).

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createPayment } from '@/lib/payments/flow'
-import { createServerClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 /**
  * POST /api/pagos/flow/init
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
       )
     }
 
-    const supabase = createServerClient()
+    const supabase = createAdminClient()
 
     // Obtener orden
     const { data: orden, error: ordenError } = await supabase

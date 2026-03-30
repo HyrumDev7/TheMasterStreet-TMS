@@ -8,7 +8,7 @@ test.describe('Navegación pública', () => {
     ).toBeVisible()
   })
 
-  test('Sé TMS — formulario visible', async ({ page }) => {
+  test('SÉ TMS — formulario visible', async ({ page }) => {
     await page.goto('/ser-tms')
     await expect(page.getByRole('heading', { name: /sé tms/i })).toBeVisible()
     await expect(page.getByLabel(/nombre/i).first()).toBeVisible()

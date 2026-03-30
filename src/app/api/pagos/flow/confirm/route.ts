@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getPaymentStatus } from '@/lib/payments/flow'
-import { createServerClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { generateQRCode } from '@/lib/qr/generator'
 
 /**
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     // Obtener estado del pago desde Flow
     const paymentStatus = await getPaymentStatus(token)
 
-    const supabase = createServerClient()
+    const supabase = createAdminClient()
 
     // Buscar orden por token
     const { data: orden, error: ordenError } = await supabase

@@ -20,7 +20,7 @@ export const STORAGE_BUCKETS = {
   DOCUMENTS: 'documents',
 } as const
 
-/** Carpeta dentro del bucket DOCUMENTS para comprobantes de pago Sé TMS */
+/** Carpeta dentro del bucket DOCUMENTS para comprobantes de pago SÉ TMS */
 export const SER_TMS_COMPROBANTES_PREFIX = 'ser-tms-comprobantes'
 
 // Roles de usuario
