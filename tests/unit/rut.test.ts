@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest'
-import { validarRut, formatearRut, limpiarRut } from '@/lib/validations/rut'
+import {
+  validarRut,
+  formatearRut,
+  formatearRutSinPuntos,
+  validarRutFormatoSerTms,
+  limpiarRut,
+} from '@/lib/validations/rut'
 import { randomValidRutFormatted } from '../helpers/randomRut'
 
 describe('validarRut', () => {
@@ -31,5 +37,26 @@ describe('formatearRut / limpiarRut', () => {
   it('formatearRut produce string no vacío para entrada numérica', () => {
     const f = formatearRut('123456785')
     expect(f.length).toBeGreaterThan(0)
+  })
+})
+
+describe('formatearRutSinPuntos / validarRutFormatoSerTms', () => {
+  it('formatearRutSinPuntos quita puntos y deja solo guión', () => {
+    expect(formatearRutSinPuntos('12.345.678-5')).toBe('12345678-5')
+    expect(formatearRutSinPuntos('123456785')).toBe('12345678-5')
+  })
+
+  it('validarRutFormatoSerTms rechaza puntos y formato sin guión', () => {
+    const validSinPuntos = randomValidRutFormatted()
+    const conPuntos = formatearRut(validSinPuntos.replace(/-/g, ''))
+    expect(validarRutFormatoSerTms(conPuntos)).toBe(false)
+    expect(validarRutFormatoSerTms('123456785')).toBe(false)
+  })
+
+  it('validarRutFormatoSerTms acepta RUT válido sin puntos', () => {
+    for (let i = 0; i < 10; i++) {
+      const r = randomValidRutFormatted()
+      expect(validarRutFormatoSerTms(r), `falló: ${r}`).toBe(true)
+    }
   })
 })

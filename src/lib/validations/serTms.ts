@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { validarRut } from './rut'
+import { validarRutFormatoSerTms } from './rut'
 
 const videoLinkSchema = z
   .string()
@@ -31,8 +31,9 @@ export const serTmsSchema = z.object({
     .string()
     .min(2, 'Apellidos debe tener al menos 2 caracteres')
     .max(150, 'Apellidos muy largo'),
-  rut: z.string().refine(validarRut, {
-    message: 'RUT inválido',
+  rut: z.string().refine(validarRutFormatoSerTms, {
+    message:
+      'RUT inválido. Usa solo números con guión antes del dígito verificador, sin puntos (ej. 12345678-9)',
   }),
   aka: z
     .string()

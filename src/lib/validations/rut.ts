@@ -56,6 +56,28 @@ export function validarRut(rut: string): boolean {
   return dv === dvCalculado
 }
 
+/** Patrón SER TMS / almacenamiento sin puntos: 7 u 8 dígitos, guión, DV */
+export const RUT_SIN_PUNTOS_REGEX = /^[0-9]{7,8}-[0-9kK]$/
+
+export function validarRutFormatoSerTms(rut: string): boolean {
+  const t = rut.trim()
+  if (!RUT_SIN_PUNTOS_REGEX.test(t)) return false
+  return validarRut(t)
+}
+
+/**
+ * Formatea RUT solo con guión (sin puntos). Ej: 123456789 o 12.345.678-9 -> 12345678-9
+ */
+export function formatearRutSinPuntos(rut: string): string {
+  if (!rut) return ''
+  const rutLimpio = rut.replace(/[^0-9Kk]/g, '').toUpperCase()
+  if (rutLimpio.length === 0) return ''
+  if (rutLimpio.length < 8) return rutLimpio
+  const cuerpo = rutLimpio.slice(0, -1)
+  const dv = rutLimpio.slice(-1)
+  return `${cuerpo}-${dv}`
+}
+
 /**
  * Formatea un RUT con puntos y guión
  * Ejemplo: 123456789 -> 12.345.678-9

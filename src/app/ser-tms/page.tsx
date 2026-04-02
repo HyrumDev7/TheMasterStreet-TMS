@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { serTmsSchema, type SerTmsInput } from '@/lib/validations/serTms'
-import { formatearRut } from '@/lib/validations/rut'
+import { formatearRutSinPuntos } from '@/lib/validations/rut'
 import { ALLOWED_COMPROBANTE_FORMATS, MAX_COMPROBANTE_SIZE_MB } from '@/lib/utils/constants'
 import styles from './page.module.css'
 
@@ -27,12 +27,13 @@ export default function SerTmsPage() {
   })
 
   const rutValue = watch('rut')
-  if (rutValue && rutValue.length > 0) {
-    const formatted = formatearRut(rutValue)
-    if (formatted !== rutValue && formatted.length > 0) {
+  useEffect(() => {
+    if (!rutValue || rutValue.length === 0) return
+    const formatted = formatearRutSinPuntos(rutValue)
+    if (formatted !== rutValue) {
       setValue('rut', formatted, { shouldValidate: false })
     }
-  }
+  }, [rutValue, setValue])
 
   const onSubmit = async (data: SerTmsInput) => {
     const file = comprobanteRef.current?.files?.[0]
@@ -133,10 +134,19 @@ export default function SerTmsPage() {
                 <input
                   id="rut"
                   type="text"
-                  placeholder="12.345.678-9"
+                  inputMode="numeric"
+                  autoComplete="off"
+                  placeholder="12345678-9"
+                  title="Solo números, guión antes del dígito verificador, sin puntos"
+                  pattern="\d{7,8}-[0-9kK]"
+                  aria-describedby="rut-hint"
                   required
                   {...register('rut')}
                 />
+                <p id="rut-hint" className={styles.hint}>
+                  Formato obligatorio: sin puntos, con guión antes del dígito verificador (ej.{' '}
+                  <strong>12345678-9</strong>).
+                </p>
                 {errors.rut && (
                   <p className={styles.error}>{errors.rut.message}</p>
                 )}

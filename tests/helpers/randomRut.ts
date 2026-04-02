@@ -25,8 +25,7 @@ export function randomValidRutFormatted(): string {
   }
   if (/^0+$/.test(cuerpo)) cuerpo = '1234567'
   const dv = calcularDigitoVerificador(cuerpo)
-  const withDots = cuerpo.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-  return `${withDots}-${dv}`
+  return `${cuerpo}-${dv}`
 }
 
 export function randomString(prefix: string, len = 8): string {
