@@ -23,6 +23,9 @@ export const STORAGE_BUCKETS = {
 /** Carpeta dentro del bucket DOCUMENTS para comprobantes de pago SÉ TMS */
 export const SER_TMS_COMPROBANTES_PREFIX = 'ser-tms-comprobantes'
 
+/** Precio fijo inscripción SÉ TMS (CLP) — cobro vía Flow */
+export const SER_TMS_PRECIO_CLP = 1500
+
 // Roles de usuario
 export const USER_ROLES = {
   COMPETITOR: 'competitor',

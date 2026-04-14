@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS ordenes_compra (
   rut_comprador VARCHAR(12),
   total DECIMAL(10, 2) NOT NULL,
   estado VARCHAR(50) DEFAULT 'pending', -- pending, paid, failed, refunded
-  metodo_pago VARCHAR(50), -- flow, webpay, transbank
+  metodo_pago VARCHAR(50), -- flow (histórico: otros)
   transaction_id VARCHAR(200), -- ID de la pasarela
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()

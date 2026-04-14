@@ -1,16 +1,35 @@
--- RLS en tablas públicas + políticas mínimas.
--- Rutas API sensibles usan SUPABASE_SERVICE_ROLE_KEY (omite RLS).
--- Si alguna tabla aún no existe en tu proyecto, el bloque correspondiente se omite.
+-- =============================================================================
+-- TMS — SEGURIDAD EN BASE DE DATOS (único archivo manual para Supabase Cloud)
+-- =============================================================================
 --
--- Cubre los errores del Security Advisor "RLS Disabled in Public" para:
---   tipos_entrada, ordenes_compra, entradas, convocatorias, noticias,
---   galeria, equipo, momentos_clave, suscriptores_newsletter
--- y además profiles / eventos / ser_tms_postulaciones / inscripciones_organizacion.
+-- CÓMO USAR
+--   1. Copia TODO este archivo → Supabase → SQL Editor → Run (Ctrl+Enter).
+--   2. Luego: Dashboard → Advisors → Security → Rerun linter.
 --
--- Tras ejecutar: Dashboard → Advisors → Security → "Rerun linter".
+-- ERROR COMÚN (syntax error at or near "IF")
+--   En PostgreSQL NO puedes usar IF / BEGIN … END sueltos. Todo bloque condicional
+--   debe ir dentro de:  DO $$ BEGIN … END $$;
+--   Si guardas solo el interior en el SQL Editor, fallará como en la captura.
+--
+-- MANTENIMIENTO (organización del proyecto)
+--   Cuando un apartado ya esté aplicado y verificado en producción, BORRA ese
+--   apartado de este archivo para no repetir DDL. Las migraciones en
+--   supabase/migrations/ siguen siendo la historia oficial para CLI/local.
+--
+-- SIN SQL (solo panel de Supabase)
+--   • Leaked password protection: Authentication → Attack Protection → activar.
+--     https://supabase.com/docs/guides/auth/password-security
+--
+-- =============================================================================
+-- APARTADO 1 — RLS en tablas public (lint 0013) + políticas mínimas
+-- =============================================================================
+-- Cubre: profiles, eventos, tipos_entrada, ordenes_compra, entradas,
+-- convocatorias, noticias, galeria, equipo, momentos_clave,
+-- suscriptores_newsletter, ser_tms_postulaciones, inscripciones_organizacion.
+-- API con SUPABASE_SERVICE_ROLE_KEY omite RLS.
 
 -- ---------------------------------------------------------------------------
--- profiles.rol: requerida por políticas de admin (eventos); compatibilidad BD antiguas
+-- Esquema: profiles.rol (la app y las políticas de admin la usan; añádela si falta)
 -- ---------------------------------------------------------------------------
 DO $$
 BEGIN
@@ -43,7 +62,7 @@ BEGIN
 END $$;
 
 -- ---------------------------------------------------------------------------
--- eventos: administradores
+-- eventos: público lee publicados; admins gestionan
 -- ---------------------------------------------------------------------------
 DO $$
 BEGIN
@@ -242,9 +261,7 @@ BEGIN
   END IF;
 END $$;
 
--- ---------------------------------------------------------------------------
--- Formularios: inserts solo vía API con service role (políticas anon retiradas)
--- ---------------------------------------------------------------------------
+-- Formularios SÉ TMS / organización: sin INSERT directo anon; API usa service role
 DO $$
 BEGIN
   IF EXISTS (
@@ -252,6 +269,15 @@ BEGIN
     WHERE table_schema = 'public' AND table_name = 'ser_tms_postulaciones'
   ) THEN
     EXECUTE 'DROP POLICY IF EXISTS "Allow anonymous insert for ser_tms_postulaciones" ON public.ser_tms_postulaciones';
+    EXECUTE 'DROP POLICY IF EXISTS "ser_tms_postulaciones_no_direct_access" ON public.ser_tms_postulaciones';
+    EXECUTE $p$
+      CREATE POLICY "ser_tms_postulaciones_no_direct_access"
+        ON public.ser_tms_postulaciones
+        FOR ALL
+        TO anon, authenticated
+        USING (false)
+        WITH CHECK (false)
+    $p$;
   END IF;
 END $$;
 
@@ -263,4 +289,23 @@ BEGIN
   ) THEN
     EXECUTE 'DROP POLICY IF EXISTS "Allow anonymous insert inscripciones_organizacion" ON public.inscripciones_organizacion';
   END IF;
+END $$;
+
+-- =============================================================================
+-- APARTADO 2 — search_path en funciones (lint 0011)
+-- =============================================================================
+
+DO $$
+DECLARE
+  r RECORD;
+BEGIN
+  FOR r IN
+    SELECT p.oid::regprocedure::text AS fn
+    FROM pg_proc p
+    JOIN pg_namespace n ON n.oid = p.pronamespace
+    WHERE n.nspname = 'public'
+      AND p.proname IN ('update_updated_at_column', 'validar_rut')
+  LOOP
+    EXECUTE format('ALTER FUNCTION %s SET search_path = public', r.fn);
+  END LOOP;
 END $$;

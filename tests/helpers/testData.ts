@@ -13,6 +13,7 @@ export function randomSerTmsJsonBody() {
     ciudadComuna: faker.location.city(),
     edad: faker.number.int({ min: 18, max: 45 }),
     linkVideo: `https://www.youtube.com/watch?v=${faker.string.alphanumeric({ length: 11 })}`,
+    email: faker.internet.email(),
   }
 }
 

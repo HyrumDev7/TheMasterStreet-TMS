@@ -1,3 +1,7 @@
+/**
+ * Integración Flow — crear pago y firma HMAC.
+ * @see https://developers.flow.cl/
+ */
 import axios from 'axios'
 import crypto from 'crypto'
 
@@ -89,9 +93,19 @@ export async function createPayment(
   }
 }
 
+/**
+ * Respuesta de GET /payment/getStatus (objeto PaymentStatus).
+ * Estados según documentación Flow:
+ * - 1: pendiente de pago
+ * - 2: pagada
+ * - 3: rechazada
+ * - 4: anulada
+ *
+ * @see https://developers.flow.cl/en/docs/tutorial-basics/status
+ */
 export interface PaymentStatus {
   status: number
-  statusText: string
+  statusText?: string
   amount: number
   currency: string
   commerceOrder: string
@@ -118,7 +132,7 @@ export async function getPaymentStatus(token: string): Promise<PaymentStatus> {
       params: { ...params, s: signature },
     })
 
-    return response.data
+    return normalizePaymentStatus(response.data)
   } catch (error: any) {
     console.error('Error al obtener estado de pago:', error)
     if (error.response) {
@@ -127,5 +141,41 @@ export async function getPaymentStatus(token: string): Promise<PaymentStatus> {
       )
     }
     throw new Error('Error al comunicarse con Flow')
+  }
+}
+
+function normalizePaymentStatus(data: unknown): PaymentStatus {
+  const o = data as Record<string, unknown>
+  const status = Number(o.status)
+  const amount = Math.round(Number(o.amount))
+  const commerceOrder =
+    o.commerceOrder != null ? String(o.commerceOrder) : ''
+  return {
+    status: Number.isFinite(status) ? status : -1,
+    statusText: o.statusText != null ? String(o.statusText) : undefined,
+    amount: Number.isFinite(amount) ? amount : 0,
+    currency: o.currency != null ? String(o.currency) : 'CLP',
+    commerceOrder,
+    pendingReason:
+      o.pendingReason != null ? String(o.pendingReason) : undefined,
+  }
+}
+
+/**
+ * Mapea status numérico de Flow a columna ordenes_compra.estado.
+ */
+export function flowStatusToOrderEstado(
+  status: number
+): 'pending' | 'paid' | 'failed' {
+  switch (status) {
+    case 2:
+      return 'paid'
+    case 1:
+      return 'pending'
+    case 3:
+    case 4:
+      return 'failed'
+    default:
+      return 'failed'
   }
 }

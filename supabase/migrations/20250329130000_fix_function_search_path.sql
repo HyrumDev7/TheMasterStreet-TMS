@@ -1,31 +1,21 @@
--- Corrige warnings "Function Search Path Mutable" (splinter / Security Advisor).
--- Fija search_path para evitar ataques por resolución de nombres ambigua.
+-- Corrige WARN "Function Search Path Mutable" (lint 0011).
+-- Aplica a todas las sobrecargas de cada función por nombre.
 --
--- Warnings de Auth (no son SQL): "Leaked Password Protection Disabled"
+-- Auth (no es SQL): "Leaked Password Protection Disabled"
 -- → Supabase Dashboard → Authentication → Attack Protection
---   → activar "Leaked password protection" (comparación con Have I Been Pwned).
+--   → activar "Leaked password protection".
 
 DO $$
+DECLARE
+  r RECORD;
 BEGIN
-  IF EXISTS (
-    SELECT 1 FROM pg_proc p
+  FOR r IN
+    SELECT p.oid::regprocedure::text AS fn
+    FROM pg_proc p
     JOIN pg_namespace n ON n.oid = p.pronamespace
     WHERE n.nspname = 'public'
-      AND p.proname = 'update_updated_at_column'
-      AND pg_get_function_arguments(p.oid) = ''
-  ) THEN
-    ALTER FUNCTION public.update_updated_at_column() SET search_path = public;
-  END IF;
-END $$;
-
-DO $$
-BEGIN
-  IF EXISTS (
-    SELECT 1 FROM pg_proc p
-    JOIN pg_namespace n ON n.oid = p.pronamespace
-    WHERE n.nspname = 'public'
-      AND p.proname = 'validar_rut'
-  ) THEN
-    ALTER FUNCTION public.validar_rut(character varying) SET search_path = public;
-  END IF;
+      AND p.proname IN ('update_updated_at_column', 'validar_rut')
+  LOOP
+    EXECUTE format('ALTER FUNCTION %s SET search_path = public', r.fn);
+  END LOOP;
 END $$;

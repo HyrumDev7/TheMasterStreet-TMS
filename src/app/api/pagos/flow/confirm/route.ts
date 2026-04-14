@@ -1,30 +1,41 @@
 import { NextResponse } from 'next/server'
-import { getPaymentStatus } from '@/lib/payments/flow'
+import type { SupabaseClient } from '@supabase/supabase-js'
+import {
+  getPaymentStatus,
+  flowStatusToOrderEstado,
+} from '@/lib/payments/flow'
+import { parseFlowConfirmationToken } from '@/lib/payments/flowConfirmation'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { generateQRCode } from '@/lib/qr/generator'
+import { insertSerTmsIfPaid } from '@/lib/ser-tms/completeInscription'
+
+type OrdenRow = {
+  id: string
+  tipo: string | null
+  ser_tms_datos: unknown
+  email_comprador: string
+  total: number
+  transaction_id: string | null
+}
 
 /**
  * POST /api/pagos/flow/confirm
- * Webhook de confirmación de pago desde Flow
- * Flow llama a esta URL cuando se completa un pago
+ * Webhook urlConfirmation: Flow envía el token (POST urlencoded); hay que llamar payment/getStatus.
+ * Responder HTTP 200 en menos de 15 s (recomendado entre 1 y 10 s).
+ *
+ * @see https://developers.flow.cl/docs/tutorial-basics/order-confirmation
  */
 export async function POST(request: Request) {
   try {
-    const { token } = await request.json()
+    const token = await parseFlowConfirmationToken(request)
 
     if (!token) {
-      return NextResponse.json(
-        { error: 'Token requerido' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Token requerido' }, { status: 400 })
     }
 
-    // Obtener estado del pago desde Flow
     const paymentStatus = await getPaymentStatus(token)
-
     const supabase = createAdminClient()
 
-    // Buscar orden por token
     const { data: orden, error: ordenError } = await supabase
       .from('ordenes_compra')
       .select('*')
@@ -33,84 +44,80 @@ export async function POST(request: Request) {
 
     if (ordenError || !orden) {
       console.error('Orden no encontrada para token:', token)
-      return NextResponse.json(
-        { error: 'Orden no encontrada' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Orden no encontrada' }, { status: 404 })
     }
 
-    // Verificar que el monto coincida
-    if (paymentStatus.amount !== Math.round(orden.total)) {
-      console.error('Monto no coincide:', paymentStatus.amount, orden.total)
+    const ordenRow = orden as OrdenRow
+
+    const commerceOrder = String(paymentStatus.commerceOrder ?? '').trim()
+    if (
+      !commerceOrder ||
+      commerceOrder.toLowerCase() !== String(ordenRow.id).toLowerCase()
+    ) {
+      console.error(
+        'commerceOrder no coincide con la orden:',
+        commerceOrder,
+        ordenRow.id
+      )
       return NextResponse.json(
-        { error: 'Monto no coincide' },
+        { error: 'La orden del pago no coincide' },
         { status: 400 }
       )
     }
 
-    // Determinar estado según respuesta de Flow
-    // Flow status: 1 = Pagado, 2 = Rechazado, 3 = Anulado, 4 = Reembolsado
-    let nuevoEstado: 'paid' | 'failed' | 'refunded' = 'failed'
-
-    if (paymentStatus.status === 1) {
-      nuevoEstado = 'paid'
-    } else if (paymentStatus.status === 4) {
-      nuevoEstado = 'refunded'
+    if (paymentStatus.amount !== Math.round(Number(ordenRow.total))) {
+      console.error('Monto no coincide:', paymentStatus.amount, ordenRow.total)
+      return NextResponse.json({ error: 'Monto no coincide' }, { status: 400 })
     }
 
-    // Actualizar orden
+    const nuevoEstado = flowStatusToOrderEstado(paymentStatus.status)
+
     const { error: updateError } = await supabase
       .from('ordenes_compra')
-      .update({
-        estado: nuevoEstado,
-      })
-      .eq('id', orden.id)
+      .update({ estado: nuevoEstado })
+      .eq('id', ordenRow.id)
 
     if (updateError) {
       console.error('Error al actualizar orden:', updateError)
-      return NextResponse.json(
-        { error: 'Error al actualizar orden' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Error al actualizar orden' }, { status: 500 })
     }
 
-    // Si el pago fue exitoso, generar entradas y códigos QR
     if (nuevoEstado === 'paid') {
-      // Obtener entradas de la orden
-      const { data: entradas, error: entradasError } = await supabase
-        .from('entradas')
-        .select('*')
-        .eq('orden_id', orden.id)
-
-      if (!entradasError && entradas) {
-        // Generar códigos QR para cada entrada
-        for (const entrada of entradas) {
-          if (!entrada.codigo_qr) {
-            const qrCode = await generateQRCode(entrada.id)
-            
-            await supabase
-              .from('entradas')
-              .update({ codigo_qr: qrCode })
-              .eq('id', entrada.id)
-          }
-        }
-
-        // TODO: Enviar email con entradas y QR codes
-      }
+      await procesarPostPagoFlow(supabase, ordenRow, token)
     }
 
     return NextResponse.json({
       success: true,
-      ordenId: orden.id,
+      ordenId: ordenRow.id,
       estado: nuevoEstado,
     })
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : 'Error al confirmar el pago'
     console.error('Error al confirmar pago:', error)
-    return NextResponse.json(
-      {
-        error: error.message || 'Error al confirmar el pago',
-      },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: msg }, { status: 500 })
+  }
+}
+
+async function procesarPostPagoFlow(
+  supabase: SupabaseClient,
+  orden: OrdenRow,
+  token: string
+) {
+  if (orden.tipo === 'ser_tms' && orden.ser_tms_datos) {
+    await insertSerTmsIfPaid(supabase, { ...orden, metodo_pago: 'flow' }, token)
+    return
+  }
+
+  const { data: entradas, error: entradasError } = await supabase
+    .from('entradas')
+    .select('*')
+    .eq('orden_id', orden.id)
+
+  if (entradasError || !entradas?.length) return
+
+  for (const entrada of entradas) {
+    if (entrada.codigo_qr) continue
+    const qrCode = await generateQRCode(entrada.id)
+    await supabase.from('entradas').update({ codigo_qr: qrCode }).eq('id', entrada.id)
   }
 }

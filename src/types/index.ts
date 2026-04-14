@@ -8,4 +8,5 @@ export type EventType = 'batalla' | 'workshop' | 'cypher' | 'showcase'
 export type EventStatus = 'draft' | 'published' | 'cancelled' | 'finished'
 export type ApplicationStatus = 'pending' | 'accepted' | 'rejected' | 'waitlist'
 export type OrderStatus = 'pending' | 'paid' | 'failed' | 'refunded'
-export type PaymentMethod = 'flow' | 'webpay' | 'transbank'
+/** Medio de pago actual (histórico en BD puede incluir otros valores). */
+export type PaymentMethod = 'flow'

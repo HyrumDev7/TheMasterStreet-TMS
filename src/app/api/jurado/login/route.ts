@@ -1,8 +1,22 @@
 import { NextResponse } from 'next/server'
-import { validateJuradoCredentials } from '@/lib/jurado-credentials'
+import {
+  isJuradoLoginEnabled,
+  validateJuradoCredentials,
+} from '@/lib/jurado-credentials'
 
 export async function POST(request: Request) {
   try {
+    if (!isJuradoLoginEnabled()) {
+      return NextResponse.json(
+        {
+          valid: false,
+          disabled: true,
+          error: 'El acceso para jurados está deshabilitado temporalmente.',
+        },
+        { status: 403 }
+      )
+    }
+
     const body = await request.json()
     const { clasificatoria, email, password } = body as {
       clasificatoria?: number

@@ -48,6 +48,17 @@ export const serTmsSchema = z.object({
     .min(1, 'Edad mínima 1')
     .max(120, 'Edad no válida'),
   linkVideo: videoLinkSchema,
+  email: z.string().email('Correo inválido'),
 })
 
 export type SerTmsInput = z.infer<typeof serTmsSchema>
+
+/** Payload guardado en ordenes_compra.ser_tms_datos (sin email en JSON; va en la orden). */
+export type SerTmsPayload = Omit<SerTmsInput, 'email'>
+
+export const serTmsPayloadSchema = serTmsSchema.omit({ email: true })
+
+/** Mismo esquema que el formulario; el checkout usa solo Flow (medio de pago fijo en servidor). */
+export const serTmsCheckoutSchema = serTmsSchema
+
+export type SerTmsCheckoutInput = z.infer<typeof serTmsCheckoutSchema>

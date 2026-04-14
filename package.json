@@ -8,13 +8,14 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "seed:jurado": "node scripts/seed-jurado.mjs",
+    "seed:jurado": "node --env-file=.env.local scripts/seed-jurado.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:all": "npm run test && npm run test:e2e",
-    "test:cleanup-db": "node --env-file=.env.local scripts/cleanup-test-data.mjs"
+    "test:cleanup-db": "node --env-file=.env.local scripts/cleanup-test-data.mjs",
+    "count:ser-tms": "node --env-file=.env.local scripts/count-ser-tms.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",

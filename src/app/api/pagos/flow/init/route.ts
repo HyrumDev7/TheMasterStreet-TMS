@@ -1,11 +1,14 @@
 import { NextResponse } from 'next/server'
 import { createPayment } from '@/lib/payments/flow'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { APP_URL } from '@/lib/utils/constants'
 
 /**
  * POST /api/pagos/flow/init
- * Inicializa un pago con Flow
+ * Inicializa un pago con Flow (entradas u otras órdenes).
  * Body: { ordenId: string }
+ *
+ * @see https://developers.flow.cl/api (payment/create)
  */
 export async function POST(request: Request) {
   try {
@@ -42,8 +45,7 @@ export async function POST(request: Request) {
       )
     }
 
-    // Crear pago en Flow
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+    const appUrl = APP_URL.replace(/\/$/, '')
 
     const payment = await createPayment({
       amount: Math.round(orden.total), // Flow requiere enteros
@@ -72,13 +74,10 @@ export async function POST(request: Request) {
       url: `${payment.url}?token=${payment.token}`,
       token: payment.token,
     })
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error al inicializar pago:', error)
-    return NextResponse.json(
-      {
-        error: error.message || 'Error al inicializar el pago',
-      },
-      { status: 500 }
-    )
+    const message =
+      error instanceof Error ? error.message : 'Error al inicializar el pago'
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }
