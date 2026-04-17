@@ -1,109 +1,56 @@
-import { NextResponse } from 'next/server'
-import { createAdminClient } from '@/lib/supabase/admin'
-import { serTmsCheckoutSchema } from '@/lib/validations/serTms'
-import { limpiarRut } from '@/lib/validations/rut'
-import { createPayment } from '@/lib/payments/flow'
-import { SER_TMS_PRECIO_CLP, APP_URL } from '@/lib/utils/constants'
+import { NextRequest, NextResponse } from 'next/server';
+import { createAdminClient } from '@/lib/supabase/admin'; // ajusta el path
+import { createPayment } from '@/lib/payments/flow';
+import { SER_TMS_PRECIO_CLP } from '@/lib/utils/constants';
 
-/**
- * POST /api/ser-tms/checkout
- * Crea orden $1.500 CLP y devuelve URL de pago Flow.
- * @see https://developers.flow.cl/
- */
-export async function POST(request: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const json = await request.json()
-    const parsed = serTmsCheckoutSchema.safeParse(json)
-    if (!parsed.success) {
-      return NextResponse.json(
-        { error: 'Datos inválidos', details: parsed.error.flatten() },
-        { status: 400 }
-      )
-    }
+    const body = await req.json();
+    const { email, ...datosTms } = body;
 
-    const data = parsed.data
-    const rutNormalizado = limpiarRut(data.rut)
-    const supabase = createAdminClient()
+    const supabase = createAdminClient();
+    const APP_URL = process.env.NEXT_PUBLIC_APP_URL!.replace(/\/$/, '');
 
-    const { data: yaInscrito } = await supabase
-      .from('ser_tms_postulaciones')
-      .select('id')
-      .eq('rut_normalizado', rutNormalizado)
-      .maybeSingle()
-
-    if (yaInscrito) {
-      return NextResponse.json(
-        { error: 'Ya existe una inscripción pagada con este RUT.' },
-        { status: 400 }
-      )
-    }
-
-    const payload = {
-      nombre: data.nombre,
-      apellidos: data.apellidos,
-      rut: data.rut,
-      aka: data.aka,
-      ciudadComuna: data.ciudadComuna,
-      edad: data.edad,
-      linkVideo: data.linkVideo,
-    }
-
-    const { data: orden, error: ordenErr } = await supabase
+    // 1. Crear orden en Supabase
+    const { data: orden, error } = await supabase
       .from('ordenes_compra')
       .insert({
-        email_comprador: data.email,
-        nombre_comprador: `${data.nombre} ${data.apellidos}`.slice(0, 200),
-        rut_comprador: data.rut,
-        total: SER_TMS_PRECIO_CLP,
-        estado: 'pending',
         tipo: 'ser_tms',
-        ser_tms_datos: payload,
-        metodo_pago: 'flow',
+        estado: 'pending',
+        total: SER_TMS_PRECIO_CLP,
+        email,
+        ser_tms_datos: datosTms,
       })
-      .select('id')
-      .single()
+      .select()
+      .single();
 
-    if (ordenErr || !orden) {
-      console.error('ser-tms checkout orden:', ordenErr)
-      return NextResponse.json(
-        { error: 'No se pudo crear la orden de pago. Revisa la tabla ordenes_compra (columnas tipo, ser_tms_datos).' },
-        { status: 500 }
-      )
+    if (error || !orden) {
+      console.error('Error creando orden:', error);
+      return NextResponse.json({ error: 'Error creando orden' }, { status: 500 });
     }
 
-    const ordenId = orden.id
-    const appUrl = APP_URL.replace(/\/$/, '')
-    const returnUserUrl = `${appUrl}/ser-tms/pago/exito?ordenId=${ordenId}`
+    // 2. Crear pago en Flow
+    const payment = await createPayment({
+      amount: SER_TMS_PRECIO_CLP,
+      commerceOrder: orden.id, // UUID de la orden
+      email,
+      subject: 'SÉ TMS - Inscripción',
+      urlConfirmation: `${APP_URL}/api/pagos/flow/confirm`,
+      urlReturn: `${APP_URL}/ser-tms/pago/exito?ordenId=${orden.id}`,
+    });
 
-    try {
-      const payment = await createPayment({
-        amount: SER_TMS_PRECIO_CLP,
-        commerceOrder: ordenId,
-        email: data.email,
-        subject: `Inscripción SÉ TMS — ${ordenId.slice(0, 8)}`,
-        urlConfirmation: `${appUrl}/api/pagos/flow/confirm`,
-        urlReturn: returnUserUrl,
-      })
+    // 3. Guardar token de Flow en la orden
+    await supabase
+      .from('ordenes_compra')
+      .update({ transaction_id: payment.token })
+      .eq('id', orden.id);
 
-      await supabase
-        .from('ordenes_compra')
-        .update({
-          transaction_id: payment.token,
-          metodo_pago: 'flow',
-        })
-        .eq('id', ordenId)
-
-      return NextResponse.json({
-        redirectUrl: `${payment.url}?token=${payment.token}`,
-        ordenId,
-      })
-    } catch (e: unknown) {
-      const msg = e instanceof Error ? e.message : 'Error al iniciar Flow'
-      console.error('Flow ser-tms:', e)
-      return NextResponse.json({ error: msg }, { status: 500 })
-    }
+    // 4. Devolver URL de redireccionamiento al front
+    return NextResponse.json({
+      redirectUrl: `${payment.url}?token=${payment.token}`,
+    });
   } catch (err) {
-    console.error('ser-tms checkout:', err)
-    return NextResponse.json({ error: 'Error al procesar la solicitud' }, { status: 400 })
+    console.error('Checkout error:', err);
+    return NextResponse.json({ error: 'Error interno' }, { status: 500 });
   }
 }
