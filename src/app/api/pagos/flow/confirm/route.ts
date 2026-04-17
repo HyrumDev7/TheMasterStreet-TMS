@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { getPaymentStatus } from '@/lib/payments/flow';
-import { insertSerTmsIfPaid } from '@/lib/ser-tms/insertSerTms'; // tu lógica de negocio
+import { insertSerTmsIfPaid } from '@/lib/ser-tms/completeInscription';
 
 // Flow envía un POST con application/x-www-form-urlencoded
 export async function POST(req: NextRequest) {
@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
 
     // 5. Lógica SÉ TMS si quedó pagado
     if (nuevoEstado === 'paid') {
-      await insertSerTmsIfPaid(orden);
+      await insertSerTmsIfPaid(supabase, orden, token);
     }
 
     // Flow espera HTTP 200 para confirmar recepción del webhook
