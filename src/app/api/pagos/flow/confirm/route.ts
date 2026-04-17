@@ -3,6 +3,19 @@ import { createAdminClient } from '@/lib/supabase/admin';
 import { getPaymentStatus } from '@/lib/payments/flow';
 import { insertSerTmsIfPaid } from '@/lib/ser-tms/completeInscription';
 
+/**
+ * Probe manual (navegador o GET): confirma que la ruta existe. Flow usa solo POST.
+ */
+export function GET() {
+  return new NextResponse(
+    'Flow confirm: use POST with Content-Type application/x-www-form-urlencoded and body token=...',
+    {
+      status: 200,
+      headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+    }
+  );
+}
+
 // Flow envía un POST con application/x-www-form-urlencoded
 export async function POST(req: NextRequest) {
   try {
