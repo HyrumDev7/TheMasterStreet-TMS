@@ -7,6 +7,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { email, ...datosTms } = body;
+    const { nombre, apellidos, rut } = body;
 
     const supabase = createAdminClient();
     const APP_URL = process.env.NEXT_PUBLIC_APP_URL!.replace(/\/$/, '');
@@ -19,6 +20,8 @@ export async function POST(req: NextRequest) {
         estado: 'pending',
         total: SER_TMS_PRECIO_CLP,
         email_comprador: email,
+        nombre_comprador: `${nombre} ${apellidos}`.trim(),
+        rut_comprador: rut,
         ser_tms_datos: datosTms,
       })
       .select()
