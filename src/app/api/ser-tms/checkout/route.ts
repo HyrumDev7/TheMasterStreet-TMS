@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
         tipo: 'ser_tms',
         estado: 'pending',
         total: SER_TMS_PRECIO_CLP,
-        email,
+        email_comprador: email,
         ser_tms_datos: datosTms,
       })
       .select()

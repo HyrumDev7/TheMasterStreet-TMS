@@ -11,6 +11,7 @@ const FLOW_API_URL = (process.env.FLOW_API_URL || 'https://www.flow.cl/api').rep
 const FLOW_API_KEY = process.env.FLOW_API_KEY
 const FLOW_SECRET_KEY = process.env.FLOW_SECRET_KEY
 const APP_URL = (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/$/, '')
+const FLOW_TEST_EMAIL = process.env.FLOW_TEST_EMAIL || process.env.DIAG_TEST_EMAIL
 
 function generateSignature(params) {
   const keys = Object.keys(params).sort()
@@ -28,6 +29,13 @@ async function main() {
     process.exit(1)
   }
 
+  if (!FLOW_TEST_EMAIL) {
+    console.error(
+      '\nFalta FLOW_TEST_EMAIL (o DIAG_TEST_EMAIL) en .env.local con un correo válido para crear pagos de prueba.'
+    )
+    process.exit(1)
+  }
+
   if (FLOW_API_URL.includes('sandbox')) {
     console.log('Modo: SANDBOX (sin cobros reales en producción Flow)')
   } else {
@@ -40,7 +48,7 @@ async function main() {
     amount: 1500,
     commerceOrder,
     currency: 'CLP',
-    email: 'prueba@ejemplo.cl',
+    email: FLOW_TEST_EMAIL,
     subject: 'Diagnóstico TMS (puede ignorarse)',
     urlConfirmation: `${APP_URL}/api/pagos/flow/confirm`,
     urlReturn: `${APP_URL}/ser-tms/pago/exito?ordenId=diag`,
