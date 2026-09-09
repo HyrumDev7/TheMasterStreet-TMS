@@ -25,6 +25,7 @@
   background-repeat: no-repeat;
   background-color: var(--tms-bg);
   min-height: 100vh;
+  overflow: hidden;
 }
 
 .heroBgOverlay {
@@ -245,6 +246,8 @@
 
 /* Imagen ~55–60% de la altura de la card; proporción card ~2:1 (alto:ancho) como en el diseño */
 .cardImage {
+  position: relative;
+  overflow: hidden;
   width: 100%;
   aspect-ratio: 2 / 3;
   background-color: #d4d4d8;

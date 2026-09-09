@@ -2,7 +2,7 @@
  * Tipos compartidos de la aplicación
  */
 
-export type UserRole = 'competitor' | 'admin' | 'judge'
+export type UserRole = 'competitor' | 'admin' | 'editor' | 'judge'
 export type UserStatus = 'active' | 'suspended' | 'banned'
 export type EventType = 'batalla' | 'workshop' | 'cypher' | 'showcase'
 export type EventStatus = 'draft' | 'published' | 'cancelled' | 'finished'

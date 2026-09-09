@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { createServerClient } from '@/lib/supabase/server'
 import { HomeCardsOrCarousel } from '@/components/home/HomeCardsOrCarousel'
+import { HomeHeroBackground } from '@/components/home/HomeHeroBackground'
 import styles from './page.module.css'
 
 export const dynamic = 'force-dynamic'
@@ -21,12 +22,7 @@ export default async function HomePage() {
     <div className={styles.root}>
       {/* Hero + Cards: imagen de fondo unificada que ocupa todo el transfondo */}
       <div className={styles.heroAndCardsWrap}>
-        <div
-          className={styles.heroBg}
-          style={{ backgroundImage: 'url(/images/hero-definitivo.png)' }}
-        >
-          <div className={styles.heroBgOverlay} aria-hidden />
-        </div>
+        <HomeHeroBackground />
         <div className={styles.heroBgWave} aria-hidden />
         <section className={styles.hero}>
           <div className={styles.heroContent}>

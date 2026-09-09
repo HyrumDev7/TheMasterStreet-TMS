@@ -9,6 +9,8 @@ import {
   BookOpen,
 } from 'lucide-react'
 import { CalendarCardControls } from '@/components/calendar/CalendarCardControls'
+import { PanelMediaLayer } from '@/components/cms/PanelMediaLayer'
+import type { PanelMediaItem } from '@/lib/cms/panels'
 import { HOME_CARDS } from '@/lib/homeCards'
 import styles from '@/app/page.module.css'
 
@@ -34,7 +36,7 @@ const HISTORIA_TAG_LINKS: Record<string, string> = {
   'FORMULARIO DE INSCRIPCIÓN': '/formulario-inscripcion',
 }
 
-export function HomeCardsSection() {
+export function HomeCardsSection({ media = [] }: { media?: PanelMediaItem[] }) {
   return (
     <section className={styles.cardsSection}>
       <div className={styles.cardsContainer}>
@@ -42,13 +44,16 @@ export function HomeCardsSection() {
           {HOME_CARDS.map((card) => {
             const CardIcon = ICON_MAP[card.icon]
             const isCalendario = card.id === 'card-calendario'
+            const overlays = media.filter((item) => item.panel_id === card.id)
             const imageEl = (
               <div
                 className={styles.cardImage}
                 style={{
                   backgroundImage: `url(/images/${card.id}.${card.imgExt})`,
                 }}
-              />
+              >
+                <PanelMediaLayer items={overlays} />
+              </div>
             )
             const titleEl = (
               <>

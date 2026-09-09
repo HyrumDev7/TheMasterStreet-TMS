@@ -30,6 +30,7 @@ export const SER_TMS_PRECIO_CLP = 1500
 export const USER_ROLES = {
   COMPETITOR: 'competitor',
   ADMIN: 'admin',
+  EDITOR: 'editor',
   JUDGE: 'judge',
 } as const
 

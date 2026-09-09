@@ -9,10 +9,9 @@ import { z } from 'zod'
  */
 export async function POST(request: Request) {
   try {
-    const body = await request.json()
-    
-    // Validar datos con Zod
-    const validatedData = registroSchema.parse(body)
+    const raw = await request.json()
+    const { rol: _ignoredRol, ...safeBody } = raw as Record<string, unknown>
+    const validatedData = registroSchema.parse(safeBody)
     
     const supabase = createServerClient()
     
@@ -72,12 +71,13 @@ export async function POST(request: Request) {
     }
     
     // Crear perfil en la tabla profiles
+    // El rol nunca viene del cliente: todo registro es usuario normal
     const profileData = {
       id: authData.user.id,
       nombre: validatedData.nombre,
       rut: validatedData.rut,
       alias: validatedData.alias,
-      email: validatedData.email,
+      email: validatedData.email.toLowerCase(),
       rol: 'competitor',
       estado: 'active',
     }

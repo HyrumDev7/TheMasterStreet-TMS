@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/hooks/useAuth'
 import { Menu, X, User } from 'lucide-react'
 import { useMenu } from '@/contexts/MenuContext'
+import { CmsHeaderLink } from '@/components/cms/CmsHeaderLink'
 import styles from './Header.module.css'
 
 export default function Header() {
@@ -48,6 +49,7 @@ export default function Header() {
                     <User size={18} />
                     {user.user_metadata?.alias || 'Mi Perfil'}
                   </Link>
+                  <CmsHeaderLink />
                   <button
                     onClick={signOut}
                     className="text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300"
@@ -56,13 +58,27 @@ export default function Header() {
                   </button>
                 </div>
               ) : (
-                <button
-                  type="button"
-                  className={styles.juradoButton}
-                  onClick={() => setJuradoModalOpen(true)}
-                >
-                  JURADO
-                </button>
+                <div className="flex items-center gap-3">
+                  <Link
+                    href="/login"
+                    className="text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300"
+                  >
+                    Entrar
+                  </Link>
+                  <Link
+                    href="/registro"
+                    className="text-sm font-medium uppercase tracking-wide transition-colors hover:text-gray-300"
+                  >
+                    Registro
+                  </Link>
+                  <button
+                    type="button"
+                    className={styles.juradoButton}
+                    onClick={() => setJuradoModalOpen(true)}
+                  >
+                    JURADO
+                  </button>
+                </div>
               )}
             </div>
           </div>

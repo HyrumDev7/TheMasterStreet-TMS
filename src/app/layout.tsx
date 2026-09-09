@@ -5,6 +5,8 @@ import { MenuProvider } from '@/contexts/MenuContext'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import { CookieConsent } from '@/components/layout/CookieConsent'
+import { VisitBeacon } from '@/components/cms/VisitBeacon'
+import { GoogleAnalytics } from '@/components/cms/GoogleAnalytics'
 import styles from './layout.module.css'
 import { APP_URL } from '@/lib/utils/constants'
 
@@ -54,7 +56,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className={styles.main}>{children}</main>
           <Footer />
           <CookieConsent />
+          <VisitBeacon />
         </MenuProvider>
+        <GoogleAnalytics />
       </body>
     </html>
   )

@@ -6,6 +6,8 @@ import {
   CAROUSEL_IMAGE_FILES,
   CAROUSEL_SLIDE_DURATION_SEC,
 } from '@/lib/carousel'
+import { PanelMediaLayer } from '@/components/cms/PanelMediaLayer'
+import type { PanelMediaItem } from '@/lib/cms/panels'
 import styles from './HeroCarousel.module.css'
 
 const CAROUSEL_IMAGES = CAROUSEL_IMAGE_FILES.map((file) => ({
@@ -13,11 +15,11 @@ const CAROUSEL_IMAGES = CAROUSEL_IMAGE_FILES.map((file) => ({
   alt: 'The Master Street',
 }))
 
-/** sizes: carrusel nunca supera 1920px de ancho → nunca ampliamos por encima de la resolución nativa */
 const IMAGE_SIZES =
   '(max-width: 640px) 100vw, (max-width: 1024px) 100vw, (max-width: 1280px) 1280px, 1920px'
 
-export function HeroCarousel() {
+export function HeroCarousel({ media = [] }: { media?: PanelMediaItem[] }) {
+  const overlays = media.filter((item) => item.panel_id === 'carousel')
   const [index, setIndex] = useState(0)
 
   useEffect(() => {
@@ -31,36 +33,37 @@ export function HeroCarousel() {
     <section className={styles.section} aria-label="Carrusel de imágenes">
       <div className={styles.carouselWrapper}>
         <div className={styles.carouselContainer}>
-        <div className={styles.track} style={{ transform: `translateX(-${index * 100}%)` }}>
-          {CAROUSEL_IMAGES.map((img, i) => (
-            <div key={img.src} className={styles.slide}>
-              <Image
-                src={img.src}
-                alt={`${img.alt} – imagen ${i + 1}`}
-                fill
-                className={styles.image}
-                sizes={IMAGE_SIZES}
-                quality={95}
-                priority={i === 0}
-                loading={i === 0 ? undefined : 'lazy'}
+          <div className={styles.track} style={{ transform: `translateX(-${index * 100}%)` }}>
+            {CAROUSEL_IMAGES.map((img, i) => (
+              <div key={img.src} className={styles.slide}>
+                <Image
+                  src={img.src}
+                  alt={`${img.alt} – imagen ${i + 1}`}
+                  fill
+                  className={styles.image}
+                  sizes={IMAGE_SIZES}
+                  quality={95}
+                  priority={i === 0}
+                  loading={i === 0 ? undefined : 'lazy'}
+                />
+              </div>
+            ))}
+          </div>
+          <PanelMediaLayer items={overlays} />
+          <div className={styles.dots} role="tablist" aria-label="Seleccionar imagen">
+            {CAROUSEL_IMAGES.map((img, i) => (
+              <button
+                key={img.src}
+                type="button"
+                role="tab"
+                aria-selected={i === index}
+                aria-label={`Imagen ${i + 1}`}
+                className={styles.dot}
+                data-active={i === index}
+                onClick={() => setIndex(i)}
               />
-            </div>
-          ))}
-        </div>
-      <div className={styles.dots} role="tablist" aria-label="Seleccionar imagen">
-        {CAROUSEL_IMAGES.map((img, i) => (
-          <button
-            key={img.src}
-            type="button"
-            role="tab"
-            aria-selected={i === index}
-            aria-label={`Imagen ${i + 1}`}
-            className={styles.dot}
-            data-active={i === index}
-            onClick={() => setIndex(i)}
-          />
-        ))}
-        </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -1,3 +1,4 @@
+import { isContentEditorEmail } from '@/lib/cms/roles'
 import { redirect } from 'next/navigation'
 import { createServerClient } from '@/lib/supabase/server'
 import Link from 'next/link'
@@ -66,6 +67,15 @@ export default async function PerfilPage() {
       description: 'Gestiona tus videos de presentación',
     },
   ]
+
+  if (isContentEditorEmail(user.email)) {
+    menuItems.push({
+      href: '/admin',
+      icon: Settings,
+      title: 'Contenido del sitio',
+      description: 'Noticias, imágenes y métricas',
+    })
+  }
 
   return (
     <div className={`${styles.root} min-h-screen bg-gray-50 py-12`}>
