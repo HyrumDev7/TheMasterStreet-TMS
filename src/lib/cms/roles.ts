@@ -2,7 +2,6 @@ import { createServerClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { redirect } from 'next/navigation'
 
-/** Emails autorizados para noticias, imágenes y métricas. Nunca se elige en un formulario. */
 export function contentEditorEmails(): string[] {
   return (process.env.CONTENT_EDITOR_EMAILS || '')
     .split(',')
@@ -15,12 +14,26 @@ export function isContentEditorEmail(email: string | null | undefined): boolean 
   return contentEditorEmails().includes(email.trim().toLowerCase())
 }
 
+async function emailInAllowlist(email: string): Promise<boolean> {
+  try {
+    const admin = createAdminClient()
+    const { data } = await admin.from('cms_allowlist').select('email')
+    const wanted = email.trim().toLowerCase()
+    return (data || []).some((row: { email: string }) => row.email.trim().toLowerCase() === wanted)
+  } catch {
+    return false
+  }
+}
+
 export async function getContentEditor() {
   const supabase = createServerClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()
-  if (!user?.email || !isContentEditorEmail(user.email)) return null
+  if (!user?.email) return null
+
+  const allowed = isContentEditorEmail(user.email) || (await emailInAllowlist(user.email))
+  if (!allowed) return null
 
   const admin = createAdminClient()
   const { data: profile } = await admin

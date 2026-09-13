@@ -25,14 +25,22 @@ export default function LoginPage() {
       setLoading(false)
       return
     }
-    const dest = next.startsWith('/') ? next : '/'
-    router.replace(dest)
+    const dest = next.startsWith('/') && !next.startsWith('//') ? next : '/'
+    const me = await fetch('/api/cms/me', { credentials: 'include' })
+    const meData = await me.json().catch(() => ({ ok: false }))
+    setLoading(false)
+    if (meData.ok && (dest === '/' || dest === '')) {
+      router.replace('/admin')
+    } else {
+      router.replace(dest)
+    }
     router.refresh()
   }
 
   return (
     <div className={styles.card}>
       <h1 className={styles.title}>Iniciar sesión</h1>
+      <p>Para entrar al sitio tenés que tener cuenta. Si no te registraste, usá el enlace de abajo.</p>
       <form onSubmit={submit}>
         <label className={styles.label} htmlFor="email">
           Email

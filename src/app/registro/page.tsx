@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { formatearRutSinPuntos } from '@/lib/validations/rut'
+import { supabase } from '@/lib/supabase/client'
 import styles from '@/app/admin/admin.module.css'
 
 export default function RegistroPage() {
@@ -34,19 +35,31 @@ export default function RegistroPage() {
       }),
     })
     const data = await res.json()
-    setLoading(false)
     if (!res.ok) {
       setError(data.error || 'No se pudo registrar')
+      setLoading(false)
       return
     }
-    router.push('/login')
+    const { error: authError } = await supabase.auth.signInWithPassword({ email, password })
+    setLoading(false)
+    if (authError) {
+      router.push('/login')
+      return
+    }
+    const me = await fetch('/api/cms/me')
+    const meData = await me.json().catch(() => ({ ok: false }))
+    router.replace(meData.ok ? '/admin' : '/')
+    router.refresh()
   }
 
   return (
     <div className={styles.shell} style={{ paddingTop: '6rem' }}>
       <div className={styles.card}>
         <h1 className={styles.title}>Crear cuenta</h1>
-        <p>Todas las cuentas se crean como usuario. El panel de contenido no se elige aquí.</p>
+        <p>
+          El acceso al sitio es con cuenta. Elegí tu propia contraseña. El panel de contenido no se
+          selecciona acá: si tu email está autorizado, lo vas a ver al entrar.
+        </p>
         <form onSubmit={submit}>
           <label className={styles.label}>Nombre</label>
           <input className={styles.input} value={nombre} onChange={(e) => setNombre(e.target.value)} required />
