@@ -1,21 +1,17 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createAdminClient } from '@/lib/supabase/admin'; // ajusta el path
-import { createPayment, getMissingFlowEnvVars } from '@/lib/payments/flow';
-import { isAxiosError } from 'axios';
-import { SER_TMS_PRECIO_CLP } from '@/lib/utils/constants';
+import { NextRequest, NextResponse } from 'next/server'
+import { createAdminClient } from '@/lib/supabase/admin'
+import { areFlowPaymentsEnabled, createPayment } from '@/lib/payments/flow'
+import { isAxiosError } from 'axios'
+import { SER_TMS_PRECIO_CLP } from '@/lib/utils/constants'
+
+const FLOW_STANDBY = {
+  error: 'Los pagos con Flow están en pausa. La inscripción SÉ TMS se reactivará pronto.',
+}
 
 export async function POST(req: NextRequest) {
   try {
-    const missingFlow = getMissingFlowEnvVars();
-    if (missingFlow.length > 0) {
-      return NextResponse.json(
-        {
-          error:
-            'Faltan credenciales Flow en el servidor. En Vercel agrega FLOW_API_KEY y FLOW_SECRET_KEY (y FLOW_API_URL), luego Redeploy.',
-          missingEnv: missingFlow,
-        },
-        { status: 503 }
-      );
+    if (!areFlowPaymentsEnabled()) {
+      return NextResponse.json(FLOW_STANDBY, { status: 503 })
     }
 
     const body = await req.json();
@@ -41,16 +37,17 @@ export async function POST(req: NextRequest) {
       .single();
 
     if (error || !orden) {
-      console.error('Error creando orden:', error);
+      console.error('Error creando orden:', error)
+      const ordenMsg = error?.message ? `: ${error.message}` : ''
       return NextResponse.json(
         {
-          error: `Error creando orden${error?.message ? `: ${error.message}` : ''}`,
+          error: `Error creando orden${ordenMsg}`,
           details: error?.details ?? null,
           hint: error?.hint ?? null,
           code: error?.code ?? null,
         },
         { status: 500 }
-      );
+      )
     }
 
     // 2. Crear pago en Flow

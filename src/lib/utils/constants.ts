@@ -24,6 +24,7 @@ export const STORAGE_BUCKETS = {
 export const SER_TMS_COMPROBANTES_PREFIX = 'ser-tms-comprobantes'
 
 /** Precio fijo inscripción SÉ TMS (CLP) — cobro vía Flow */
+/** Precio fijo inscripción SÉ TMS (CLP) — cobro vía Flow (hoy en pausa). */
 export const SER_TMS_PRECIO_CLP = 1500
 
 // Roles de usuario

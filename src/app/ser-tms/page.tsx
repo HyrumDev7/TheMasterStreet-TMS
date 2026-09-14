@@ -9,6 +9,8 @@ import { formatearRutSinPuntos } from '@/lib/validations/rut'
 import { SER_TMS_PRECIO_CLP } from '@/lib/utils/constants'
 import styles from './page.module.css'
 
+const FLOW_EN_PAUSA = true
+
 export default function SerTmsPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -34,6 +36,10 @@ export default function SerTmsPage() {
   }, [rutValue, setValue])
 
   const pagar = async (data: SerTmsInput) => {
+    if (FLOW_EN_PAUSA) {
+      setError('Los pagos con Flow están en pausa. Pronto se reactivará la inscripción.')
+      return
+    }
     setError('')
     const parsed = serTmsCheckoutSchema.safeParse(data)
     if (!parsed.success) {
@@ -203,9 +209,8 @@ export default function SerTmsPage() {
                 Titular y datos de cobro (referencia)
               </h2>
               <p className={styles.bankTransferIntro}>
-                El cobro de {SER_TMS_PRECIO_CLP.toLocaleString('es-CL')} CLP lo procesarás con
-                <strong> Flow</strong> (tarjeta débito/crédito u otros medios que Flow habilite). Los
-                datos siguientes son los mismos titulares de la cuenta corporativa:
+                El cobro en línea con Flow está en pausa. Cuando se reactive, el monto será{' '}
+                {SER_TMS_PRECIO_CLP.toLocaleString('es-CL')} CLP.
               </p>
               <dl className={styles.bankTransferDl}>
                 <div className={styles.bankTransferRow}>
@@ -235,10 +240,10 @@ export default function SerTmsPage() {
               <button
                 type="button"
                 className={styles.submitBtn}
-                disabled={loading}
+                disabled
                 onClick={handleSubmit(pagar)}
               >
-                {loading ? 'Redirigiendo…' : `Pagar con Flow — $${SER_TMS_PRECIO_CLP.toLocaleString('es-CL')}`}
+                Pago en pausa
               </button>
             </div>
           </form>

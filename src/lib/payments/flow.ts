@@ -1,17 +1,20 @@
 import crypto from 'crypto';
 import axios from 'axios';
 
-const FLOW_API_URL = process.env.FLOW_API_URL!;
+const FLOW_API_URL = process.env.FLOW_API_URL?.trim() || 'https://www.flow.cl/api'
 const FLOW_API_KEY = process.env.FLOW_API_KEY!;
 const FLOW_SECRET_KEY = process.env.FLOW_SECRET_KEY!;
 
-/** Devuelve nombres de variables faltantes (Vercel / .env). La URL por defecto es producción Flow. */
+/** Devuelve nombres de variables faltantes. FLOW_API_URL es opcional (usa producción). */
 export function getMissingFlowEnvVars(): string[] {
-  const missing: string[] = [];
-  if (!process.env.FLOW_API_URL?.trim()) missing.push('FLOW_API_URL');
-  if (!process.env.FLOW_API_KEY?.trim()) missing.push('FLOW_API_KEY');
-  if (!process.env.FLOW_SECRET_KEY?.trim()) missing.push('FLOW_SECRET_KEY');
-  return missing;
+  const missing: string[] = []
+  if (!process.env.FLOW_API_KEY?.trim()) missing.push('FLOW_API_KEY')
+  if (!process.env.FLOW_SECRET_KEY?.trim()) missing.push('FLOW_SECRET_KEY')
+  return missing
+}
+
+export function areFlowPaymentsEnabled(): boolean {
+  return process.env.FLOW_PAYMENTS_ENABLED === 'true'
 }
 
 // Firma HMAC-SHA256 exactamente como Flow documenta:

@@ -1,17 +1,16 @@
 import { NextResponse } from 'next/server'
-import { createPayment } from '@/lib/payments/flow'
+import { areFlowPaymentsEnabled, createPayment } from '@/lib/payments/flow'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { APP_URL } from '@/lib/utils/constants'
 
-/**
- * POST /api/pagos/flow/init
- * Inicializa un pago con Flow (entradas u otras órdenes).
- * Body: { ordenId: string }
- *
- * @see https://developers.flow.cl/api (payment/create)
- */
 export async function POST(request: Request) {
   try {
+    if (!areFlowPaymentsEnabled()) {
+      return NextResponse.json(
+        { error: 'Los pagos con Flow están en pausa.' },
+        { status: 503 }
+      )
+    }
     const { ordenId } = await request.json()
 
     if (!ordenId) {
