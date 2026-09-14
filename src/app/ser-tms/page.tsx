@@ -50,7 +50,15 @@ export default function SerTmsPage() {
       })
       const result = await res.json()
       if (!res.ok) {
-        setError(result.error || 'No se pudo iniciar el pago')
+        const extra =
+          typeof result.flowMessage === 'string'
+            ? result.flowMessage
+            : Array.isArray(result.missingEnv)
+              ? `Faltan: ${result.missingEnv.join(', ')}`
+              : ''
+        setError(
+          [result.error || 'No se pudo iniciar el pago', extra].filter(Boolean).join(' — ')
+        )
         return
       }
       if (result.redirectUrl && typeof result.redirectUrl === 'string') {

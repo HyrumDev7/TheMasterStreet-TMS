@@ -5,6 +5,15 @@ const FLOW_API_URL = process.env.FLOW_API_URL!;
 const FLOW_API_KEY = process.env.FLOW_API_KEY!;
 const FLOW_SECRET_KEY = process.env.FLOW_SECRET_KEY!;
 
+/** Devuelve nombres de variables faltantes (Vercel / .env). La URL por defecto es producción Flow. */
+export function getMissingFlowEnvVars(): string[] {
+  const missing: string[] = [];
+  if (!process.env.FLOW_API_URL?.trim()) missing.push('FLOW_API_URL');
+  if (!process.env.FLOW_API_KEY?.trim()) missing.push('FLOW_API_KEY');
+  if (!process.env.FLOW_SECRET_KEY?.trim()) missing.push('FLOW_SECRET_KEY');
+  return missing;
+}
+
 // Firma HMAC-SHA256 exactamente como Flow documenta:
 // concatenar key+value de TODOS los params ordenados alfabéticamente, sin separadores
 function signParams(params: Record<string, string>): string {

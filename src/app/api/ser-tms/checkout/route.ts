@@ -1,10 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin'; // ajusta el path
-import { createPayment } from '@/lib/payments/flow';
+import { createPayment, getMissingFlowEnvVars } from '@/lib/payments/flow';
+import { isAxiosError } from 'axios';
 import { SER_TMS_PRECIO_CLP } from '@/lib/utils/constants';
 
 export async function POST(req: NextRequest) {
   try {
+    const missingFlow = getMissingFlowEnvVars();
+    if (missingFlow.length > 0) {
+      return NextResponse.json(
+        {
+          error:
+            'Faltan credenciales Flow en el servidor. En Vercel agrega FLOW_API_KEY y FLOW_SECRET_KEY (y FLOW_API_URL), luego Redeploy.',
+          missingEnv: missingFlow,
+        },
+        { status: 503 }
+      );
+    }
+
     const body = await req.json();
     const { email, ...datosTms } = body;
     const { nombre, apellidos, rut } = body;
@@ -29,7 +42,15 @@ export async function POST(req: NextRequest) {
 
     if (error || !orden) {
       console.error('Error creando orden:', error);
-      return NextResponse.json({ error: 'Error creando orden' }, { status: 500 });
+      return NextResponse.json(
+        {
+          error: `Error creando orden${error?.message ? `: ${error.message}` : ''}`,
+          details: error?.details ?? null,
+          hint: error?.hint ?? null,
+          code: error?.code ?? null,
+        },
+        { status: 500 }
+      );
     }
 
     // 2. Crear pago en Flow
@@ -54,6 +75,18 @@ export async function POST(req: NextRequest) {
     });
   } catch (err) {
     console.error('Checkout error:', err);
+    if (isAxiosError(err)) {
+      const flowMsg =
+        err.response?.data &&
+        typeof err.response.data === 'object' &&
+        'message' in err.response.data
+          ? String((err.response.data as { message?: unknown }).message)
+          : err.message;
+      return NextResponse.json(
+        { error: 'Flow rechazó o no respondió la creación del pago', flowMessage: flowMsg },
+        { status: 502 }
+      );
+    }
     return NextResponse.json({ error: 'Error interno' }, { status: 500 });
   }
 }
